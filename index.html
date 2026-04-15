@@ -751,7 +751,13 @@ function showPage(name){
 
 function startExperiment(){
   showPage('demo');
-  loadScenario(0);
+  // Ensure panels visible after any prior completion
+  ['exp-scenario-card','exp-panth-panel','exp-share'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display='';
+  });
+  document.getElementById('completion-card').classList.remove('active');
+  // Small delay to let page render before filling content
+  setTimeout(function(){loadScenario(0);}, 80);
 }
 
 // ── EXPERIMENT ─────────────────────────────────────────────────────────────
@@ -768,13 +774,21 @@ function loadScenario(idx) {
     else { d.className = 'progress-dot'; }
   }
 
-  // Reset UI
+  // Reset UI — set text content immediately, animate bars after brief delay
   setEl('exp-tag', s.id);
   setEl('exp-claim', s.claim);
   ['exp-outcome-no','exp-outcome-yes'].forEach(id=>document.getElementById(id).style.display='none');
   ['exp-btn-no','exp-btn-yes'].forEach(id=>document.getElementById(id).disabled=false);
   ['exp-next-wrap','exp-next-wrap-yes'].forEach(id=>document.getElementById(id).style.display='none');
   document.getElementById('completion-card').classList.remove('active');
+  // Reset score display to dashes while loading
+  ['exp-truth-score','exp-harm-score'].forEach(id=>setEl(id,'—'));
+  ['exp-truth-verdict','exp-harm-verdict','exp-hh','exp-hp','exp-hc','exp-reasoning']
+    .forEach(id=>setEl(id,''));
+  // Reset bars to zero
+  ['exp-truth-bar','exp-harm-bar','exp-hh-bar','exp-hp-bar','exp-hc-bar'].forEach(id=>{
+    var el=document.getElementById(id); if(el)el.style.width='0%';
+  });
   scoresShownAt = null;
 
   setTimeout(()=>{
