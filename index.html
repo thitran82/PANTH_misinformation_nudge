@@ -23,6 +23,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 4
   background:rgba(13,27,42,.88);backdrop-filter:blur(12px);}
 .nav-logo{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--amber);letter-spacing:.12em;}
 .nav-logo span{color:var(--dim);font-weight:400;}
+.nav-pid{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.08em;}
 .nav-tabs{display:flex;gap:4px;}
 .nav-tab{font-family:var(--mono);font-size:11px;letter-spacing:.1em;padding:6px 16px;border-radius:4px;
   border:none;background:transparent;color:var(--dim);cursor:pointer;transition:all .2s;}
@@ -73,11 +74,21 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 4
 .section-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--amber);margin-bottom:10px;}
 .section-title{font-size:24px;font-weight:700;margin-bottom:6px;}
 .section-sub{font-size:14px;color:var(--dim);margin-bottom:28px;line-height:1.6;}
-.scenario-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px;}
-.stab{font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:7px 14px;border-radius:6px;
-  border:1px solid rgba(255,255,255,.1);background:transparent;color:var(--dim);cursor:pointer;transition:all .2s;}
-.stab:hover{border-color:rgba(255,255,255,.25);color:var(--white);}
-.stab.active{border-color:var(--amber);color:var(--amber);background:rgba(232,160,32,.1);}
+
+/* Scenario progress */
+.scenario-progress{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;padding:12px 16px;
+  background:rgba(255,255,255,.03);border-radius:8px;
+  border:1px solid rgba(255,255,255,.06);
+}
+.progress-label{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.1em;}
+.progress-label span{color:var(--amber);}
+.progress-dots{display:flex;gap:6px;}
+.progress-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.1);transition:all .3s;}
+.progress-dot.done{background:var(--green);}
+.progress-dot.current{background:var(--amber);transform:scale(1.3);}
+
 .scenario-card{background:var(--navy2);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;margin-bottom:24px;}
 .sc-header{padding:18px 26px 14px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:12px;}
 .sc-tag{font-family:var(--mono);font-size:10px;letter-spacing:.15em;padding:4px 10px;border-radius:4px;
@@ -85,6 +96,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 4
 .sc-label{font-size:12px;color:var(--dim);font-family:var(--mono);}
 .sc-body{padding:22px 26px;}
 .sc-claim{font-size:16px;line-height:1.65;color:var(--white);font-style:italic;}
+
 .panth-panel{background:var(--navy2);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:28px;margin-bottom:24px;}
 .panth-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
 .panth-panel-title{font-family:var(--mono);font-size:12px;letter-spacing:.15em;color:var(--dim);}
@@ -123,7 +135,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 4
 .divider{height:1px;background:rgba(255,255,255,.06);margin:24px 0;}
 
 /* SHARE DECISION */
-.share-decision{background:var(--navy2);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:28px;}
+.share-decision{background:var(--navy2);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:28px;margin-bottom:24px;}
 .share-prompt-label{font-family:var(--mono);font-size:11px;letter-spacing:.15em;color:var(--amber);margin-bottom:8px;}
 .share-prompt-text{font-size:17px;font-weight:700;margin-bottom:14px;line-height:1.45;}
 .share-deception-note{font-size:13px;color:var(--dim);line-height:1.65;margin-bottom:24px;
@@ -135,7 +147,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 4
 .timer-ring-fill{fill:none;stroke:var(--amber);stroke-width:4;stroke-linecap:round;
   stroke-dasharray:138;stroke-dashoffset:138;transform:rotate(-90deg);transform-origin:50% 50%;
   transition:stroke-dashoffset .1s linear;}
-.timer-info{flex:1;}
 .timer-info p{font-size:13px;color:var(--dim);line-height:1.6;}
 .timer-info strong{color:var(--white);}
 .share-question{font-size:15px;font-weight:600;margin-bottom:14px;color:var(--white);}
@@ -152,8 +163,26 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:18px 4
 .outcome-card.yes{background:rgba(214,69,69,.07);border:1px solid rgba(214,69,69,.2);}
 .outcome-title{font-size:15px;font-weight:700;margin-bottom:6px;}
 .outcome-body{font-size:13px;color:var(--dim);line-height:1.65;}
-.hesitancy-logged{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:10px;letter-spacing:.08em;}
+.hesitancy-logged{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:8px;letter-spacing:.06em;}
 .hesitancy-logged span{color:var(--amber);}
+
+/* NEXT SCENARIO BUTTON */
+.next-scenario-wrap{margin-top:16px;}
+.btn-next-scenario{font-family:var(--mono);font-size:12px;letter-spacing:.1em;
+  padding:12px 28px;border-radius:8px;border:none;
+  background:var(--amber);color:var(--navy);cursor:pointer;font-weight:700;transition:all .2s;}
+.btn-next-scenario:hover{background:var(--amber2);}
+
+/* COMPLETION CARD */
+.completion-card{background:var(--navy2);border:1px solid rgba(42,170,114,.3);
+  border-radius:16px;padding:40px;text-align:center;display:none;}
+.completion-card.active{display:block;animation:fadeUp .4s ease;}
+.completion-icon{font-size:48px;margin-bottom:16px;}
+.completion-title{font-size:24px;font-weight:800;margin-bottom:10px;}
+.completion-body{font-size:14px;color:var(--dim);line-height:1.7;max-width:500px;margin:0 auto;}
+.completion-pid{font-family:var(--mono);font-size:12px;color:var(--amber);
+  margin-top:16px;padding:10px 16px;background:rgba(232,160,32,.08);
+  border-radius:6px;display:inline-block;letter-spacing:.08em;}
 
 /* ANALYSER */
 .claim-input-card{background:var(--navy2);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:24px;margin-bottom:20px;}
@@ -193,9 +222,10 @@ footer a{color:var(--dim);text-decoration:none;}
 
 <nav>
   <div class="nav-logo">PANTH <span>/ PROTOTYPE</span></div>
+  <div class="nav-pid" id="nav-pid"></div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('walkthrough')">About</button>
-    <button class="nav-tab" onclick="showPage('demo')">Demo</button>
+    <button class="nav-tab" onclick="showPage('demo')">Experiment</button>
     <button class="nav-tab" onclick="showPage('tool')">Analyser</button>
   </div>
 </nav>
@@ -270,18 +300,18 @@ footer a{color:var(--dim);text-decoration:none;}
           After seeing the scores, you are given a brief <strong>pause window</strong> to reflect before deciding whether to share. <strong>You always make the final decision.</strong>
         </div>
         <div class="slide-visual" style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
-          <div style="flex:1;min-width:110px;text-align:center;padding:10px;">
-            <div style="font-family:var(--mono);font-size:26px;font-weight:800;color:var(--sky);">1.5</div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:3px;">TRUTH SCORE</div>
+          <div style="flex:1;min-width:100px;text-align:center;padding:10px;">
+            <div style="font-family:var(--mono);font-size:24px;font-weight:800;color:var(--sky);">1.5</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:3px;">TRUTH</div>
           </div>
           <div style="display:flex;align-items:center;color:var(--dim);font-size:18px;">+</div>
-          <div style="flex:1;min-width:110px;text-align:center;padding:10px;">
-            <div style="font-family:var(--mono);font-size:26px;font-weight:800;color:var(--amber);">8.4</div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:3px;">HARM SCORE</div>
+          <div style="flex:1;min-width:100px;text-align:center;padding:10px;">
+            <div style="font-family:var(--mono);font-size:24px;font-weight:800;color:var(--amber);">8.4</div>
+            <div style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:3px;">HARM</div>
           </div>
           <div style="display:flex;align-items:center;color:var(--dim);font-size:18px;">→</div>
-          <div style="flex:1;min-width:110px;text-align:center;padding:10px;">
-            <div style="font-family:var(--mono);font-size:26px;font-weight:800;color:var(--white);">Your call</div>
+          <div style="flex:1;min-width:100px;text-align:center;padding:10px;">
+            <div style="font-family:var(--mono);font-size:20px;font-weight:800;color:var(--white);">Your call</div>
             <div style="font-family:var(--mono);font-size:10px;color:var(--dim);margin-top:3px;">SHARE OR NOT</div>
           </div>
         </div>
@@ -291,22 +321,34 @@ footer a{color:var(--dim);text-decoration:none;}
   <div class="wt-nav">
     <button class="btn btn-secondary" id="btn-prev" onclick="prevSlide()" style="opacity:.3;pointer-events:none;">← Prev</button>
     <button class="btn btn-primary" id="btn-next" onclick="nextSlide()">Next →</button>
-    <button class="btn btn-primary btn-lg" id="btn-try" onclick="showPage('demo')" style="display:none;">Try the Demo →</button>
+    <button class="btn btn-primary btn-lg" id="btn-try" onclick="startExperiment()" style="display:none;">Start Experiment →</button>
   </div>
 </div>
 
-<!-- PAGE 2: DEMO -->
+<!-- PAGE 2: EXPERIMENT -->
 <div id="page-demo" class="page">
   <div class="wrap">
-    <div class="section-eyebrow">Demo</div>
-    <h2 class="section-title">PANTH in action</h2>
-    <p class="section-sub">Select a vaccine-related claim. PANTH will display Truth and Harm scores, then ask for your sharing decision.</p>
-    <div class="scenario-tabs" id="scenario-tabs"></div>
-    <div class="scenario-card">
-      <div class="sc-header"><div class="sc-tag" id="demo-tag">S1</div><div class="sc-label">HEALTH CLAIM</div></div>
-      <div class="sc-body"><p class="sc-claim" id="demo-claim"></p></div>
+    <div class="section-eyebrow">Experiment</div>
+    <h2 class="section-title" id="exp-title">Evaluating content</h2>
+    <p class="section-sub">Read the content below, review the PANTH scores, then make your sharing decision.</p>
+
+    <!-- Progress tracker -->
+    <div class="scenario-progress">
+      <div class="progress-label">Scenario <span id="prog-current">1</span> of <span id="prog-total">5</span></div>
+      <div class="progress-dots" id="progress-dots"></div>
     </div>
-    <div class="panth-panel">
+
+    <!-- Scenario display -->
+    <div class="scenario-card" id="exp-scenario-card">
+      <div class="sc-header">
+        <div class="sc-tag" id="exp-tag">—</div>
+        <div class="sc-label">HEALTH CLAIM</div>
+      </div>
+      <div class="sc-body"><p class="sc-claim" id="exp-claim"></p></div>
+    </div>
+
+    <!-- PANTH scores -->
+    <div class="panth-panel" id="exp-panth-panel">
       <div class="panth-panel-header">
         <div class="panth-panel-title">PANTH EVALUATION</div>
         <div class="panth-badge">AI + HUMAN VERIFIED</div>
@@ -314,41 +356,41 @@ footer a{color:var(--dim);text-decoration:none;}
       <div class="meters-row">
         <div class="meter-card">
           <div class="meter-name truth-color">TRUTH-O-METER</div>
-          <div class="gauge-wrap"><div class="gauge-track"><div class="gauge-fill truth" id="demo-truth-bar"></div></div></div>
-          <div class="meter-score"><span id="demo-truth-score">—</span><span class="denom"> / 10</span></div>
-          <div class="meter-verdict" id="demo-truth-verdict"></div>
+          <div class="gauge-wrap"><div class="gauge-track"><div class="gauge-fill truth" id="exp-truth-bar"></div></div></div>
+          <div class="meter-score"><span id="exp-truth-score">—</span><span class="denom"> / 10</span></div>
+          <div class="meter-verdict" id="exp-truth-verdict"></div>
         </div>
         <div class="meter-card">
           <div class="meter-name harm-color">HARM-O-METER</div>
-          <div class="gauge-wrap"><div class="gauge-track"><div class="gauge-fill harm-g" id="demo-harm-bar"></div></div></div>
-          <div class="meter-score"><span id="demo-harm-score">—</span><span class="denom"> / 10</span></div>
-          <div class="meter-verdict" id="demo-harm-verdict"></div>
+          <div class="gauge-wrap"><div class="gauge-track"><div class="gauge-fill harm-g" id="exp-harm-bar"></div></div></div>
+          <div class="meter-score"><span id="exp-harm-score">—</span><span class="denom"> / 10</span></div>
+          <div class="meter-verdict" id="exp-harm-verdict"></div>
         </div>
       </div>
       <div class="harm-meters">
         <div style="font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--dim);margin-bottom:12px;">HARM BREAKDOWN</div>
         <div class="harm-sub">
-          <div class="harm-sub-label"><span>PERSONAL HEALTH HARM</span><span class="hval" id="demo-hh">—</span></div>
-          <div class="harm-sub-bar"><div class="harm-sub-fill hh" id="demo-hh-bar"></div></div>
+          <div class="harm-sub-label"><span>PERSONAL HEALTH HARM</span><span class="hval" id="exp-hh">—</span></div>
+          <div class="harm-sub-bar"><div class="harm-sub-fill hh" id="exp-hh-bar"></div></div>
         </div>
         <div class="harm-sub">
-          <div class="harm-sub-label"><span>PSYCHOLOGICAL HARM</span><span class="hval" id="demo-hp">—</span></div>
-          <div class="harm-sub-bar"><div class="harm-sub-fill hp" id="demo-hp-bar"></div></div>
+          <div class="harm-sub-label"><span>PSYCHOLOGICAL HARM</span><span class="hval" id="exp-hp">—</span></div>
+          <div class="harm-sub-bar"><div class="harm-sub-fill hp" id="exp-hp-bar"></div></div>
         </div>
         <div class="harm-sub">
-          <div class="harm-sub-label"><span>COMMUNITY HARM</span><span class="hval" id="demo-hc">—</span></div>
-          <div class="harm-sub-bar"><div class="harm-sub-fill hc" id="demo-hc-bar"></div></div>
+          <div class="harm-sub-label"><span>COMMUNITY HARM</span><span class="hval" id="exp-hc">—</span></div>
+          <div class="harm-sub-bar"><div class="harm-sub-fill hc" id="exp-hc-bar"></div></div>
         </div>
       </div>
       <div class="divider"></div>
       <div class="reasoning-box">
         <p><strong>WHY THESE SCORES</strong></p>
-        <p id="demo-reasoning" style="margin-top:8px;"></p>
+        <p id="exp-reasoning" style="margin-top:8px;"></p>
       </div>
     </div>
 
-    <!-- EXPERIMENT DECISION BLOCK -->
-    <div class="share-decision">
+    <!-- SHARING DECISION -->
+    <div class="share-decision" id="exp-share">
       <div class="share-prompt-label">SHARING DECISION</div>
       <div class="share-prompt-text">According to your own judgement, and after seeing the Truth and Harm scores above — do you want to share this content?</div>
       <div class="share-deception-note">
@@ -357,8 +399,8 @@ footer a{color:var(--dim);text-decoration:none;}
       <div class="timer-ring-wrap">
         <svg class="timer-ring-svg" width="60" height="60" viewBox="0 0 48 48">
           <circle class="timer-ring-track" cx="24" cy="24" r="22"/>
-          <circle class="timer-ring-fill" id="demo-timer-ring" cx="24" cy="24" r="22"/>
-          <text x="24" y="24" id="demo-timer-text" font-family="Space Mono" font-size="13" fill="#e8a020" text-anchor="middle" dominant-baseline="central">9</text>
+          <circle class="timer-ring-fill" id="exp-timer-ring" cx="24" cy="24" r="22"/>
+          <text x="24" y="24" id="exp-timer-text" font-family="Space Mono" font-size="13" fill="#e8a020" text-anchor="middle" dominant-baseline="central">9</text>
         </svg>
         <div class="timer-info">
           <p>Take a moment to consider both scores before deciding. <strong>There is no right or wrong answer.</strong> Your honest response is what matters.</p>
@@ -366,19 +408,33 @@ footer a{color:var(--dim);text-decoration:none;}
       </div>
       <div class="share-question">Do you want to share this content?</div>
       <div class="share-buttons">
-        <button class="btn-share btn-share-no" id="demo-btn-no" onclick="makeDecision('no')">Do NOT share this</button>
-        <button class="btn-share btn-share-yes" id="demo-btn-yes" onclick="makeDecision('yes')">Share this content</button>
+        <button class="btn-share btn-share-no" id="exp-btn-no" onclick="makeExpDecision('no')">Do NOT share this</button>
+        <button class="btn-share btn-share-yes" id="exp-btn-yes" onclick="makeExpDecision('yes')">Share this content</button>
       </div>
-      <div class="outcome-card no" id="outcome-no">
+      <div class="outcome-card no" id="exp-outcome-no">
         <div class="outcome-title">Decision recorded: Not sharing.</div>
         <div class="outcome-body">Thank you. Your response has been logged.</div>
-        <div class="hesitancy-logged" id="demo-log-no"></div>
+        <div class="hesitancy-logged" id="exp-log-no"></div>
+        <div class="next-scenario-wrap" id="exp-next-wrap" style="display:none;">
+          <button class="btn-next-scenario" onclick="nextScenario()">Next scenario →</button>
+        </div>
       </div>
-      <div class="outcome-card yes" id="outcome-yes">
+      <div class="outcome-card yes" id="exp-outcome-yes">
         <div class="outcome-title">Decision recorded: Sharing.</div>
         <div class="outcome-body">Thank you. Your response has been logged. The research team will proceed with sharing as indicated.</div>
-        <div class="hesitancy-logged" id="demo-log-yes"></div>
+        <div class="hesitancy-logged" id="exp-log-yes"></div>
+        <div class="next-scenario-wrap" id="exp-next-wrap-yes" style="display:none;">
+          <button class="btn-next-scenario" onclick="nextScenario()">Next scenario →</button>
+        </div>
       </div>
+    </div>
+
+    <!-- COMPLETION CARD -->
+    <div class="completion-card" id="completion-card">
+      <div class="completion-icon">✓</div>
+      <div class="completion-title">All scenarios complete.</div>
+      <div class="completion-body">Thank you for participating. Your responses across all scenarios have been recorded. The research team will follow up with a debrief.<br><br>Please note that as part of this study's design, no content will actually be shared on your behalf. This was a simulation to measure decision-making responses.</div>
+      <div class="completion-pid" id="completion-pid"></div>
     </div>
   </div>
 </div>
@@ -396,7 +452,7 @@ footer a{color:var(--dim);text-decoration:none;}
         <span style="font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em;align-self:center;">QUICK FILL:</span>
         <button class="qfill" onclick="quickFill(0)">Altered DNA vaccine</button>
         <button class="qfill" onclick="quickFill(1)">Nanochip tracking</button>
-        <button class="qfill" onclick="quickFill(2)">Mandatory vaccination law</button>
+        <button class="qfill" onclick="quickFill(2)">Magnet attraction</button>
         <button class="qfill" onclick="quickFill(3)">Custom claim</button>
       </div>
     </div>
@@ -453,7 +509,6 @@ footer a{color:var(--dim);text-decoration:none;}
           <p id="live-reasoning" style="margin-top:8px;"></p>
         </div>
       </div>
-      <!-- EXPERIMENT DECISION BLOCK -->
       <div class="share-decision">
         <div class="share-prompt-label">SHARING DECISION</div>
         <div class="share-prompt-text">According to your own judgement, and after seeing the Truth and Harm scores above — do you want to share this content?</div>
@@ -467,7 +522,7 @@ footer a{color:var(--dim);text-decoration:none;}
             <text x="24" y="24" id="live-timer-text" font-family="Space Mono" font-size="13" fill="#e8a020" text-anchor="middle" dominant-baseline="central">9</text>
           </svg>
           <div class="timer-info">
-            <p>Take a moment to consider both scores before deciding. <strong>There is no right or wrong answer.</strong> Your honest response is what matters.</p>
+            <p>Take a moment to consider both scores before deciding. <strong>There is no right or wrong answer.</strong></p>
           </div>
         </div>
         <div class="share-question">Do you want to share this content?</div>
@@ -482,7 +537,7 @@ footer a{color:var(--dim);text-decoration:none;}
         </div>
         <div class="outcome-card yes" id="live-outcome-yes">
           <div class="outcome-title">Decision recorded: Sharing.</div>
-          <div class="outcome-body">Thank you. Your response has been logged. The research team will proceed with sharing as indicated.</div>
+          <div class="outcome-body">Thank you. Your response has been logged.</div>
           <div class="hesitancy-logged" id="live-log-yes"></div>
         </div>
       </div>
@@ -497,149 +552,327 @@ footer a{color:var(--dim);text-decoration:none;}
 </div>
 
 <script>
-const SCENARIOS=[
+// ── ALL 20 SCENARIOS ──────────────────────────────────────────────────────
+const ALL_SCENARIOS = [
   {id:'S1',label:'Altered DNA',
    claim:'The COVID-19 vaccines permanently and irreversibly change your DNA.',
    truth:1.5,harm:8.2,hh:7.5,hp:6.8,hc:8.9,
-   truthVerdict:'Scientifically false. No COVID-19 vaccine alters human DNA.',
-   harmVerdict:'High harm potential if widely shared.',
-   reasoning:'mRNA vaccines cannot edit or interact with DNA in the cell nucleus. Wide sharing discourages vaccination, reducing herd immunity and increasing preventable illness. Community harm is highest because vaccine hesitancy spreads through social networks.'},
+   truthVerdict:'Scientifically false. mRNA vaccines never enter the cell nucleus and cannot alter DNA.',
+   harmVerdict:'High harm. Drives vaccine refusal with serious public health consequences.',
+   reasoning:'mRNA cannot edit or interact with DNA in the cell nucleus. Wide sharing discourages vaccination, reducing herd immunity. Community harm is highest because vaccine hesitancy spreads through social networks.'},
   {id:'S2',label:"Women's Infertility",
    claim:'The COVID-19 vaccines will cause women infertility and they cannot become pregnant or have babies in the future.',
    truth:1.0,harm:8.8,hh:8.2,hp:7.9,hc:8.5,
    truthVerdict:'False. No clinical evidence links COVID-19 vaccines to infertility.',
-   harmVerdict:'Very high harm. Targets reproductive anxiety in young women.',
-   reasoning:'No mechanism exists by which mRNA vaccines could cause infertility. This claim targets reproductive anxieties, driving vaccine hesitancy particularly among women of childbearing age with direct maternal and infant health consequences.'},
+   harmVerdict:'Very high harm. Targets reproductive anxiety driving vaccine refusal.',
+   reasoning:'No biological mechanism exists by which mRNA vaccines could cause infertility. This claim targets reproductive anxieties among women of childbearing age with direct maternal and infant health consequences.'},
   {id:'S3',label:'Children Autism',
    claim:'The COVID-19 vaccines will cause autism spectrum disorder (ASD) in children.',
    truth:0.5,harm:9.1,hh:8.8,hp:7.2,hc:9.3,
-   truthVerdict:'False. The autism-vaccine link has been thoroughly debunked.',
-   harmVerdict:'Extremely high harm. Recycled myth with severe public health consequences.',
-   reasoning:'The original 1998 Wakefield study was retracted for fraud. Numerous large studies found no link. This claim is extremely harmful because it drives childhood vaccine refusal, contributing to outbreaks of preventable diseases.'},
+   truthVerdict:'False. The autism-vaccine link was thoroughly debunked. The original Wakefield study was retracted for fraud.',
+   harmVerdict:'Extremely high harm. Drives childhood vaccine refusal contributing to preventable disease outbreaks.',
+   reasoning:'The 1998 Wakefield study was fraudulent and retracted. Numerous large studies found no link. This claim is extremely harmful because it drives childhood vaccine refusal contributing to measles and other preventable disease outbreaks.'},
+  {id:'S4',label:"Bell's Palsy",
+   claim:"The COVID-19 vaccines will cause Bell's Palsy, which weakens facial muscles or paralyses the face.",
+   truth:2.0,harm:6.8,hh:6.2,hp:5.8,hc:6.9,
+   truthVerdict:"Misleading. Bell's Palsy cases were reported but at rates no higher than background population rates.",
+   harmVerdict:"Moderate-high harm. Facial paralysis fears drive vaccine hesitancy despite very low actual risk.",
+   reasoning:"A small number of Bell's Palsy cases were reported in vaccine trials, but subsequent analysis found no causal link — rates were consistent with background population incidence. The claim overstates both the risk and the causal relationship."},
   {id:'S5',label:'Dead Nurse',
    claim:'A 42-year-old nurse was found dead 8 to 10 hours after getting the COVID-19 vaccine.',
    truth:3.5,harm:7.6,hh:6.8,hp:7.1,hc:7.8,
-   truthVerdict:'Misleading. A real event misrepresented — no causal link was established.',
-   harmVerdict:'High harm. Emotionally vivid cases drive disproportionate fear.',
-   reasoning:'This event occurred but the causal claim was not supported by autopsy or investigation. Emotionally vivid personal narratives are disproportionately persuasive compared to statistical evidence about vaccine safety.'},
+   truthVerdict:'Misleading. A real event misrepresented — no causal link to the vaccine was established by investigation.',
+   harmVerdict:'High harm. Emotionally vivid cases drive disproportionate fear responses.',
+   reasoning:'This event occurred but the causal claim was not supported by autopsy. Emotionally vivid personal narratives are cognitively sticky and disproportionately persuasive compared to statistical vaccine safety data.'},
+  {id:'S6',label:'Fainting Nurse',
+   claim:'A nurse passed out and lost consciousness on live TV right after taking the COVID-19 vaccine.',
+   truth:4.0,harm:5.5,hh:4.2,hp:5.1,hc:5.8,
+   truthVerdict:'Partly true but misleading. The nurse fainted due to a pre-existing vasovagal condition, not the vaccine.',
+   harmVerdict:'Moderate harm. Visible incident amplified fear disproportionate to actual risk.',
+   reasoning:'The fainting was real but attributable to a pre-existing vasovagal syncope condition, not the vaccine. The claim omits this context. Harm is moderate because fainting is a known anxiety response to injections generally and does not indicate vaccine danger.'},
+  {id:'S7',label:'Aborted Fetus',
+   claim:'The COVID-19 vaccines were made by using an aborted male fetus.',
+   truth:2.5,harm:6.2,hh:4.5,hp:6.8,hc:6.5,
+   truthVerdict:'Misleading. Some vaccines used fetal cell lines from decades-old cell cultures in testing — not fresh fetal tissue.',
+   harmVerdict:'Moderate-high harm. Exploits religious and ethical sensitivities to drive vaccine refusal.',
+   reasoning:'Some COVID-19 vaccines used decades-old fetal cell lines (from the 1970s-80s) in testing phases, not in production. No vaccines contain fetal tissue. The claim conflates cell line usage with active use of aborted fetuses, exploiting religious sensitivities.'},
   {id:'S8',label:'Available Vaccines',
    claim:'There were more than 410 leftover COVID-19 vaccine doses the public could get at Brooklyn Army Terminal with no qualification check.',
    truth:5.5,harm:5.8,hh:4.2,hp:4.5,hc:6.8,
-   truthVerdict:'Partially verifiable. Event occurred but eligibility details were disputed.',
+   truthVerdict:'Partially verifiable. The event occurred but eligibility details were disputed.',
    harmVerdict:'Moderate harm. Allocation inequity risk rather than direct health danger.',
-   reasoning:'This claim describes a real event with some factual basis. Harm is moderate — the primary concern is fairness in vaccine distribution. Community harm dominates as queue-jumping erodes trust in equitable distribution systems.'},
+   reasoning:'This claim describes a real event with factual basis but misleading framing about eligibility. Primary concern is fairness in vaccine distribution. Community harm dominates as queue-jumping erodes trust in equitable distribution systems.'},
   {id:'S9',label:'Nanochips',
    claim:'The COVID-19 vaccines contain nanochips that track vaccinated people and send information to officials.',
    truth:0.5,harm:7.8,hh:5.5,hp:8.2,hc:8.5,
-   truthVerdict:'Completely false. No such nanochip technology exists.',
+   truthVerdict:'Completely false. No such nanochip technology exists or is deliverable via injection.',
    harmVerdict:'High harm. Conspiracy claims drive vaccine refusal and erode institutional trust.',
-   reasoning:'This is a conspiracy theory with zero factual basis. Psychological harm is elevated because surveillance fears tap into deep anxieties about bodily autonomy. Community harm is high because conspiracy narratives are highly shareable and self-reinforcing in social networks.'}
+   reasoning:'This is a conspiracy theory with zero factual basis. Psychological harm is elevated because surveillance fears tap into deep anxieties about bodily autonomy. Community harm is high because conspiracy narratives are self-reinforcing in social networks.'},
+  {id:'S10',label:'Mandatory Law',
+   claim:'Federal law will require mandatory COVID-19 vaccination for all Americans.',
+   truth:1.5,harm:6.5,hh:4.0,hp:6.8,hc:7.2,
+   truthVerdict:'False. No federal mandatory vaccination law exists or has been enacted.',
+   harmVerdict:'High harm. Government control fears drive vaccine refusal and erode public trust.',
+   reasoning:'No such federal law exists. The claim exploits fears about government overreach and bodily autonomy. Community harm is elevated because distrust of public health authority compounds existing vaccine hesitancy.'},
+  {id:'S11',label:'Magnet Attraction',
+   claim:'The COVID-19 vaccine contains metal particles — vaccinated people can stick magnets to their injection site.',
+   truth:1.0,harm:6.5,hh:5.2,hp:5.8,hc:6.8,
+   truthVerdict:'False. Vaccines contain no metallic or magnetic materials. The effect is caused by skin friction.',
+   harmVerdict:'Moderate-high harm. Visually compelling demonstrations spread widely on social media.',
+   reasoning:'Vaccines contain no magnetic materials. The apparent magnetic effect is caused by skin oils and friction — the same effect occurs on skin that has not been vaccinated. However, the visual nature of this claim made it extremely shareable on video platforms, amplifying community harm.'},
+  {id:'S12',label:'Spike Protein Shedding',
+   claim:'Vaccinated people shed spike proteins that can harm unvaccinated people nearby, including causing miscarriages in pregnant women.',
+   truth:1.5,harm:8.4,hh:7.8,hp:7.2,hc:8.6,
+   truthVerdict:'False. mRNA vaccines do not cause shedding. Vaccinated people cannot transmit vaccine components.',
+   harmVerdict:'Very high harm. Exploits pregnancy fears and drives social separation between vaccinated and unvaccinated.',
+   reasoning:'mRNA vaccines produce spike proteins only within the vaccinated person\'s cells — there is no mechanism for transmission to others. This claim targets pregnancy anxieties and drives social division, with high community harm because it undermines trust in vaccinated family members and coworkers.'},
+  {id:'S13',label:'Depopulation Agenda',
+   claim:'The COVID-19 vaccines were designed by Bill Gates as part of a depopulation agenda to reduce the world\'s population.',
+   truth:0.5,harm:8.6,hh:6.5,hp:8.5,hc:9.0,
+   truthVerdict:'Completely false. This is a conspiracy theory with no factual basis.',
+   harmVerdict:'Very high harm. Deep conspiracy narratives are highly resistant to correction and drive broad vaccine refusal.',
+   reasoning:'This is a wide-ranging conspiracy theory combining anti-vaccine sentiment with technophobia and anti-elite sentiment. Community harm is among the highest of any scenario because the claim undermines trust in all public health institutions simultaneously, not just vaccine safety.'},
+  {id:'S14',label:'5G Activation',
+   claim:'The COVID-19 vaccines are activated by 5G signals and can be used to control the behaviour of vaccinated individuals.',
+   truth:0.5,harm:7.2,hh:5.0,hp:7.8,hc:7.5,
+   truthVerdict:'Completely false. Vaccines contain biological components only — no electronic or radio-frequency elements.',
+   harmVerdict:'High harm. Technology fear combined with vaccine refusal creates compounding public health risk.',
+   reasoning:'Vaccines are biological preparations — they contain no electronic components and cannot interact with radio frequencies. This claim combines two separate conspiracy theories (vaccine harm + 5G harm) into one, making it particularly resistant to correction.'},
+  {id:'S15',label:'Natural Immunity Danger',
+   claim:'Getting vaccinated after recovering from COVID-19 is dangerous because the vaccine causes an immune overreaction that can be fatal.',
+   truth:2.5,harm:7.8,hh:7.5,hp:6.2,hc:7.9,
+   truthVerdict:'Misleading. Vaccination after natural infection is safe and boosts immunity; no evidence of dangerous overreaction.',
+   harmVerdict:'High harm. Discourages vaccination in a population that would benefit from it.',
+   reasoning:'While some mild side effects are more common after vaccination in previously infected individuals (indicating immune memory), serious adverse reactions are extremely rare and no causal mechanism for a fatal overreaction has been established. The claim discourages a population that could benefit significantly from vaccination.'},
+  {id:'S16',label:'Heart Damage',
+   claim:'The COVID-19 vaccines cause permanent heart damage in all recipients — every vaccinated person will develop myocarditis within two years.',
+   truth:2.0,harm:8.5,hh:8.2,hp:7.0,hc:8.4,
+   truthVerdict:'False. Myocarditis is a rare side effect in young males only; it is not universal and typically resolves.',
+   harmVerdict:'Very high harm. Catastrophising rare risk drives broad vaccine refusal across all demographics.',
+   reasoning:'Myocarditis has been observed at low rates in young males after mRNA vaccination, but cases are typically mild and resolve without treatment. The claim that all recipients will develop permanent heart damage is a gross exaggeration of a real but rare phenomenon, making it particularly dangerous because it contains a kernel of truth.'},
+  {id:'S17',label:'Children No Need',
+   claim:'Children do not need the COVID-19 vaccine because they cannot get COVID-19 or spread it to adults.',
+   truth:2.0,harm:7.5,hh:7.0,hp:5.5,hc:7.8,
+   truthVerdict:'False. Children can contract and transmit COVID-19; vaccination protects them and reduces transmission.',
+   harmVerdict:'High harm. Discourages childhood vaccination, reducing herd immunity.',
+   reasoning:'Children can both contract and transmit COVID-19, including to vulnerable adults. While children generally experience milder illness, they can develop serious complications including MIS-C. The claim undermines childhood vaccination programs which are critical for community protection.'},
+  {id:'S18',label:'Immune System Destroyed',
+   claim:'The COVID-19 vaccines destroy your natural immune system and make you permanently more susceptible to every future illness.',
+   truth:1.0,harm:8.8,hh:8.0,hp:7.5,hc:8.7,
+   truthVerdict:'False. Vaccines train the immune system — they do not destroy or permanently alter immune function.',
+   harmVerdict:'Very high harm. Generalised fear of immune damage discourages all future vaccination.',
+   reasoning:'mRNA vaccines train the immune system to recognise the spike protein — they do not affect the general immune response to other pathogens. This claim is particularly harmful because it discourages not just COVID-19 vaccination but potentially all future vaccination by implying permanent immune compromise.'},
+  {id:'S19',label:'Graphene Oxide',
+   claim:'COVID-19 vaccines contain graphene oxide, a toxic substance that causes blood clots and damages organs after injection.',
+   truth:0.5,harm:7.9,hh:7.2,hp:6.8,hc:8.1,
+   truthVerdict:'False. Vaccines do not contain graphene oxide. Independent laboratory analyses confirmed this.',
+   harmVerdict:'High harm. Toxic substance fears drive vaccine refusal with no factual basis.',
+   reasoning:'Independent laboratory analyses of multiple vaccine batches found no graphene oxide. This claim originated from a misinterpretation of electron microscopy images. The specific claim about blood clots and organ damage compounds the fear factor, making the harm score high despite the claim being entirely false.'},
+  {id:'S20',label:'Fake Vaccination',
+   claim:'Nurses at vaccination centres are using retractable syringes to fake vaccinations — celebrities and politicians are not actually being vaccinated.',
+   truth:1.0,harm:6.8,hh:4.5,hp:7.0,hc:7.2,
+   truthVerdict:'False. Public vaccination events are independently observed and verified.',
+   harmVerdict:'High harm. Undermines trust in vaccination programs by suggesting systemic deception.',
+   reasoning:'This claim combines anti-elite sentiment with vaccine conspiracy theory. While retractable syringes exist for safety purposes, they fully deliver the dose — they do not "hide" the injection. Community harm is elevated because the claim undermines trust in the entire public vaccination programme rather than a specific vaccine claim.'}
 ];
 
-const QUICK_CLAIMS=[
-  'The COVID-19 vaccines permanently and irreversibly change your DNA.',
-  'The COVID-19 vaccines contain nanochips that track vaccinated people.',
-  'Federal law will require mandatory COVID-19 vaccination for all Americans.',
-  ''
-];
+// ── EXPERIMENT STATE ──────────────────────────────────────────────────────
+// Each participant gets a unique ID and a random selection of 5 scenarios
+const SCENARIOS_PER_PARTICIPANT = 5;
+let participantId = null;
+let participantScenarios = [];  // randomised subset for this participant
+let currentScenarioIndex = 0;
+let scoresShownAt = null;
+let expTimer = null;
+let liveTimer = null;
 
-// Timing — records when scores become visible; hesitancy = click time - scores shown time
-let demoScoresShownAt=null, liveScoresShownAt=null;
-let demoTimer=null, liveTimer=null;
+// Generate participant ID on load
+function generatePID() {
+  const ts = Date.now().toString(36).toUpperCase();
+  const rand = Math.random().toString(36).substring(2,6).toUpperCase();
+  return 'P-' + ts + '-' + rand;
+}
 
-// SLIDE NAV
-let cur=0;
-const NSLIDES=3;
-function goSlide(n){
-  document.getElementById('slide-'+cur).classList.remove('active');
-  document.querySelectorAll('.wt-step-dot')[cur].classList.remove('active');
-  cur=n;
-  document.getElementById('slide-'+cur).classList.add('active');
-  document.querySelectorAll('.wt-step-dot')[cur].classList.add('active');
+// Fisher-Yates shuffle
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function init() {
+  participantId = generatePID();
+  // Randomly select SCENARIOS_PER_PARTICIPANT from all 20
+  participantScenarios = shuffle(ALL_SCENARIOS).slice(0, SCENARIOS_PER_PARTICIPANT);
+  // Show participant ID in nav
+  document.getElementById('nav-pid').textContent = 'ID: ' + participantId;
+  // Build progress dots
+  const dotsEl = document.getElementById('progress-dots');
+  for (let i = 0; i < SCENARIOS_PER_PARTICIPANT; i++) {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i===0?' current':'');
+    d.id = 'dot-' + i;
+    dotsEl.appendChild(d);
+  }
+  document.getElementById('prog-total').textContent = SCENARIOS_PER_PARTICIPANT;
+}
+
+// ── SLIDE NAV ─────────────────────────────────────────────────────────────
+let curSlide = 0;
+const N_SLIDES = 3;
+function goSlide(n) {
+  document.getElementById('slide-'+curSlide).classList.remove('active');
+  document.querySelectorAll('.wt-step-dot')[curSlide].classList.remove('active');
+  curSlide = n;
+  document.getElementById('slide-'+curSlide).classList.add('active');
+  document.querySelectorAll('.wt-step-dot')[curSlide].classList.add('active');
   updateSlideNav();
 }
-function nextSlide(){if(cur<NSLIDES-1)goSlide(cur+1);}
-function prevSlide(){if(cur>0)goSlide(cur-1);}
+function nextSlide(){if(curSlide<N_SLIDES-1)goSlide(curSlide+1);}
+function prevSlide(){if(curSlide>0)goSlide(curSlide-1);}
 function updateSlideNav(){
-  const isLast=cur===NSLIDES-1;
-  document.getElementById('btn-prev').style.opacity=cur===0?'.3':'1';
-  document.getElementById('btn-prev').style.pointerEvents=cur===0?'none':'auto';
+  const isLast=curSlide===N_SLIDES-1;
+  document.getElementById('btn-prev').style.opacity=curSlide===0?'.3':'1';
+  document.getElementById('btn-prev').style.pointerEvents=curSlide===0?'none':'auto';
   document.getElementById('btn-next').style.display=isLast?'none':'inline-block';
   document.getElementById('btn-try').style.display=isLast?'inline-block':'none';
 }
 
-// PAGE NAV
+// ── PAGE NAV ──────────────────────────────────────────────────────────────
 function showPage(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('page-'+name).classList.add('active');
   document.querySelectorAll('.nav-tab')[{walkthrough:0,demo:1,tool:2}[name]].classList.add('active');
-  if(name==='demo')initDemo();
 }
 
-// DEMO
-let demoInited=false;
-function initDemo(){
-  if(demoInited)return;demoInited=true;
-  const el=document.getElementById('scenario-tabs');
-  SCENARIOS.forEach((s,i)=>{
-    const b=document.createElement('button');
-    b.className='stab'+(i===0?' active':'');
-    b.textContent=s.id+' · '+s.label;
-    b.onclick=()=>loadScenario(i);
-    el.appendChild(b);
-  });
+function startExperiment(){
+  showPage('demo');
   loadScenario(0);
 }
 
-function loadScenario(idx){
-  const s=SCENARIOS[idx];
-  document.querySelectorAll('.stab').forEach((t,i)=>t.classList.toggle('active',i===idx));
-  setEl('demo-tag',s.id);setEl('demo-claim',s.claim);
-  ['outcome-no','outcome-yes'].forEach(id=>document.getElementById(id).style.display='none');
-  ['demo-btn-no','demo-btn-yes'].forEach(id=>document.getElementById(id).disabled=false);
-  demoScoresShownAt=null;
+// ── EXPERIMENT ─────────────────────────────────────────────────────────────
+function loadScenario(idx) {
+  currentScenarioIndex = idx;
+  const s = participantScenarios[idx];
+
+  // Update progress
+  document.getElementById('prog-current').textContent = idx + 1;
+  for (let i = 0; i < SCENARIOS_PER_PARTICIPANT; i++) {
+    const d = document.getElementById('dot-' + i);
+    if (i < idx) { d.className = 'progress-dot done'; }
+    else if (i === idx) { d.className = 'progress-dot current'; }
+    else { d.className = 'progress-dot'; }
+  }
+
+  // Reset UI
+  setEl('exp-tag', s.id);
+  setEl('exp-claim', s.claim);
+  ['exp-outcome-no','exp-outcome-yes'].forEach(id=>document.getElementById(id).style.display='none');
+  ['exp-btn-no','exp-btn-yes'].forEach(id=>document.getElementById(id).disabled=false);
+  ['exp-next-wrap','exp-next-wrap-yes'].forEach(id=>document.getElementById(id).style.display='none');
+  document.getElementById('completion-card').classList.remove('active');
+  scoresShownAt = null;
+
   setTimeout(()=>{
-    fill('demo-truth-bar',s.truth,10);fill('demo-harm-bar',s.harm,10);
-    sub('demo-hh-bar',s.hh,10);sub('demo-hp-bar',s.hp,10);sub('demo-hc-bar',s.hc,10);
-    setEl('demo-truth-score',s.truth.toFixed(1));setEl('demo-harm-score',s.harm.toFixed(1));
-    setEl('demo-truth-verdict',s.truthVerdict);setEl('demo-harm-verdict',s.harmVerdict);
-    setEl('demo-hh',s.hh.toFixed(1)+'/10');setEl('demo-hp',s.hp.toFixed(1)+'/10');setEl('demo-hc',s.hc.toFixed(1)+'/10');
-    setEl('demo-reasoning',s.reasoning);
-    demoScoresShownAt=Date.now(); // start timing here
-    startRing('demo-timer-ring','demo-timer-text');
+    fill('exp-truth-bar',s.truth,10); fill('exp-harm-bar',s.harm,10);
+    sub('exp-hh-bar',s.hh,10); sub('exp-hp-bar',s.hp,10); sub('exp-hc-bar',s.hc,10);
+    setEl('exp-truth-score',s.truth.toFixed(1)); setEl('exp-harm-score',s.harm.toFixed(1));
+    setEl('exp-truth-verdict',s.truthVerdict); setEl('exp-harm-verdict',s.harmVerdict);
+    setEl('exp-hh',s.hh.toFixed(1)+'/10'); setEl('exp-hp',s.hp.toFixed(1)+'/10'); setEl('exp-hc',s.hc.toFixed(1)+'/10');
+    setEl('exp-reasoning',s.reasoning);
+    scoresShownAt = Date.now(); // hesitancy clock starts here
+    startExpTimer();
   },100);
 }
 
-function startRing(ringId,txtId){
-  if(demoTimer)clearInterval(demoTimer);
-  let v=9;const C=138;
-  const ring=document.getElementById(ringId),txt=document.getElementById(txtId);
-  txt.textContent=v;ring.style.strokeDashoffset=0;
-  demoTimer=setInterval(()=>{v--;if(v<0){clearInterval(demoTimer);return;}
-    txt.textContent=v;ring.style.strokeDashoffset=C*((9-v)/9);},1000);
+function startExpTimer(){
+  if(expTimer)clearInterval(expTimer);
+  let v=9; const C=138;
+  const ring=document.getElementById('exp-timer-ring');
+  const txt=document.getElementById('exp-timer-text');
+  txt.textContent=v; ring.style.strokeDashoffset=0;
+  expTimer=setInterval(()=>{v--;if(v<0){clearInterval(expTimer);return;}
+    txt.textContent=v; ring.style.strokeDashoffset=C*((9-v)/9);},1000);
 }
 
-function makeDecision(choice){
-  const ms=demoScoresShownAt?Date.now()-demoScoresShownAt:null;
-  const sec=ms?(ms/1000).toFixed(1):null;
-  ['demo-btn-no','demo-btn-yes'].forEach(id=>document.getElementById(id).disabled=true);
-  document.getElementById('outcome-no').style.display=choice==='no'?'block':'none';
-  document.getElementById('outcome-yes').style.display=choice==='yes'?'block':'none';
-  if(sec)setEl('demo-log-'+choice,'⏱ Time to decision after scores shown: '+sec+'s');
-  const idx=Array.from(document.querySelectorAll('.stab')).findIndex(t=>t.classList.contains('active'));
-  const s=SCENARIOS[idx>=0?idx:0];
-  logDecision({scenario_id:s.id,truth_score:s.truth,harm_score:s.harm,
-    decision:choice,hesitancy_ms:ms,mode:'demo'});
-  document.getElementById('outcome-'+choice).scrollIntoView({behavior:'smooth',block:'nearest'});
+function makeExpDecision(choice){
+  const ms = scoresShownAt ? Date.now()-scoresShownAt : null;
+  const sec = ms ? (ms/1000).toFixed(1) : null;
+  const s = participantScenarios[currentScenarioIndex];
+
+  ['exp-btn-no','exp-btn-yes'].forEach(id=>document.getElementById(id).disabled=true);
+  document.getElementById('exp-outcome-no').style.display = choice==='no'?'block':'none';
+  document.getElementById('exp-outcome-yes').style.display = choice==='yes'?'block':'none';
+
+  if(sec) setEl('exp-log-'+choice, '⏱ Time to decision after scores shown: '+sec+'s');
+
+  // Show next button or completion
+  const isLast = currentScenarioIndex === SCENARIOS_PER_PARTICIPANT - 1;
+  const nextWrapId = choice==='no' ? 'exp-next-wrap' : 'exp-next-wrap-yes';
+  if (!isLast) {
+    document.getElementById(nextWrapId).style.display = 'block';
+  } else {
+    // Show completion card after short delay
+    setTimeout(showCompletion, 1200);
+  }
+
+  // Log data
+  logDecision({
+    participant_id: participantId,
+    scenario_index: currentScenarioIndex + 1,
+    scenario_id: s.id,
+    scenario_label: s.label,
+    truth_score: s.truth,
+    harm_score: s.harm,
+    harm_health: s.hh,
+    harm_psychological: s.hp,
+    harm_community: s.hc,
+    decision: choice,
+    hesitancy_ms: ms,
+    hesitancy_sec: sec,
+    mode: 'experiment'
+  });
+
+  document.getElementById('exp-outcome-'+choice).scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-// LIVE ANALYSER
+function nextScenario(){
+  loadScenario(currentScenarioIndex + 1);
+  document.getElementById('exp-scenario-card').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function showCompletion(){
+  document.getElementById('exp-scenario-card').style.display='none';
+  document.getElementById('exp-panth-panel').style.display='none';
+  document.getElementById('exp-share').style.display='none';
+  const card=document.getElementById('completion-card');
+  card.classList.add('active');
+  setEl('completion-pid','Participant ID: '+participantId);
+  // Mark all dots done
+  for(let i=0;i<SCENARIOS_PER_PARTICIPANT;i++){
+    document.getElementById('dot-'+i).className='progress-dot done';
+  }
+  // Log completion
+  logDecision({participant_id:participantId,event:'completed',
+    total_scenarios:SCENARIOS_PER_PARTICIPANT,mode:'experiment'});
+  card.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ── LIVE ANALYSER ─────────────────────────────────────────────────────────
+const QUICK_CLAIMS=[
+  'The COVID-19 vaccines permanently and irreversibly change your DNA.',
+  'The COVID-19 vaccines contain nanochips that track vaccinated people.',
+  'The COVID-19 vaccine contains metal particles — vaccinated people can stick magnets to their injection site.',
+  ''
+];
 function quickFill(idx){
   const ta=document.getElementById('claim-input');
   if(idx===3){ta.value='';ta.focus();}else{ta.value=QUICK_CLAIMS[idx];}
 }
-
 async function runAnalysis(){
   const claim=document.getElementById('claim-input').value.trim();
   if(!claim){alert('Please enter a claim to analyse.');return;}
@@ -648,7 +881,7 @@ async function runAnalysis(){
   btn.disabled=true;sp.classList.add('active');res.classList.remove('active');
   ['live-outcome-no','live-outcome-yes'].forEach(id=>document.getElementById(id).style.display='none');
   ['live-btn-no','live-btn-yes'].forEach(id=>document.getElementById(id).disabled=false);
-  liveScoresShownAt=null;
+  let liveScoresShownAt=null;
   try{
     const r=await fetch('/api/score',{method:'POST',
       headers:{'Content-Type':'application/json'},body:JSON.stringify({claim})});
@@ -662,16 +895,17 @@ async function runAnalysis(){
       setEl('live-truth-verdict',result.truth_verdict);setEl('live-harm-verdict',result.harm_verdict);
       setEl('live-hh',result.harm_health.toFixed(1)+'/10');setEl('live-hp',result.harm_psychological.toFixed(1)+'/10');setEl('live-hc',result.harm_community.toFixed(1)+'/10');
       setEl('live-reasoning',result.reasoning);
-      liveScoresShownAt=Date.now(); // start timing here
-      startLiveRing();
+      liveScoresShownAt=Date.now();
+      startLiveTimer(liveScoresShownAt);
     },100);
-    res.classList.add('active');res.scrollIntoView({behavior:'smooth',block:'start'});
-    window._live={claim,...result};
+    res.classList.add('active');
+    res.scrollIntoView({behavior:'smooth',block:'start'});
+    window._live={claim,...result,shownAt:null};
+    window._live.shownAt=liveScoresShownAt;
   }catch(e){alert('Error: '+e.message);}
   finally{btn.disabled=false;sp.classList.remove('active');}
 }
-
-function startLiveRing(){
+function startLiveTimer(shownAt){
   if(liveTimer)clearInterval(liveTimer);
   let v=9;const C=138;
   const ring=document.getElementById('live-timer-ring'),txt=document.getElementById('live-timer-text');
@@ -679,22 +913,23 @@ function startLiveRing(){
   liveTimer=setInterval(()=>{v--;if(v<0){clearInterval(liveTimer);return;}
     txt.textContent=v;ring.style.strokeDashoffset=C*((9-v)/9);},1000);
 }
-
 function makeDecisionLive(choice){
-  const ms=liveScoresShownAt?Date.now()-liveScoresShownAt:null;
+  const shownAt=window._live&&window._live.shownAt;
+  const ms=shownAt?Date.now()-shownAt:null;
   const sec=ms?(ms/1000).toFixed(1):null;
   ['live-btn-no','live-btn-yes'].forEach(id=>document.getElementById(id).disabled=true);
   document.getElementById('live-outcome-no').style.display=choice==='no'?'block':'none';
   document.getElementById('live-outcome-yes').style.display=choice==='yes'?'block':'none';
   if(sec)setEl('live-log-'+choice,'⏱ Time to decision after scores shown: '+sec+'s');
   if(window._live){
-    logDecision({scenario_id:'live',claim:window._live.claim,
-      truth_score:window._live.truth_score,harm_score:window._live.harm_score,
-      decision:choice,hesitancy_ms:ms,mode:'live'});
+    logDecision({participant_id:participantId,scenario_id:'live',
+      claim:window._live.claim,truth_score:window._live.truth_score,
+      harm_score:window._live.harm_score,decision:choice,
+      hesitancy_ms:ms,hesitancy_sec:sec,mode:'live'});
   }
 }
 
-// DATA LOGGING — sends to /api/log; graceful fallback to console
+// ── DATA LOGGING ──────────────────────────────────────────────────────────
 async function logDecision(payload){
   const data={...payload,timestamp:new Date().toISOString(),
     ua:navigator.userAgent.substring(0,80)};
@@ -704,13 +939,15 @@ async function logDecision(payload){
   }catch(e){console.log('[PANTH LOG]',JSON.stringify(data));}
 }
 
-// HELPERS
+// ── HELPERS ───────────────────────────────────────────────────────────────
 function setEl(id,t){const e=document.getElementById(id);if(e)e.textContent=t;}
 function fill(id,v,m){const e=document.getElementById(id);if(!e)return;
   e.style.width='0%';requestAnimationFrame(()=>{e.style.width=(v/m*100)+'%';});}
 function sub(id,v,m){const e=document.getElementById(id);if(!e)return;
   e.style.width='0%';requestAnimationFrame(()=>{e.style.width=(v/m*100)+'%';});}
 
+// ── INIT ──────────────────────────────────────────────────────────────────
+init();
 updateSlideNav();
 </script>
 </body>
