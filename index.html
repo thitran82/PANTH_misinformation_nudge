@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PANTH — Platform for Automated Nudging of Truth and Harm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:    #0d1b2a;
+  --navy2:   #132338;
+  --navy3:   #1a2f47;
+  --slate:   #2a4a6b;
+  --steel:   #3d6a94;
+  --sky:     #6eaed6;
+  --white:   #f0f4f8;
+  --dim:     #8fa9bf;
+  --amber:   #e8a020;
+  --amber2:  #f5be50;
+  --red:     #d64545;
+  --green:   #2aaa72;
+  --mono:    'Space Mono', monospace;
+  --sans:    'Syne', sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--navy);
+  color:var(--white);
+  font-family:var(--sans);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── BACKGROUND TEXTURE ─────────────────────────────────────── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(61,106,148,.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(232,160,32,.08) 0%, transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── LAYOUT ─────────────────────────────────────────────────── */
+#app{position:relative;z-index:1;min-height:100vh;}
+
+/* ── NAV ────────────────────────────────────────────────────── */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 40px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  position:sticky;top:0;z-index:100;
+  background:rgba(13,27,42,.85);backdrop-filter:blur(12px);
+}
+.nav-logo{
+  font-family:var(--mono);font-size:13px;font-weight:700;
+  color:var(--amber);letter-spacing:.12em;
+}
+.nav-logo span{color:var(--dim);font-weight:400;}
+.nav-tabs{display:flex;gap:4px;}
+.nav-tab{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  padding:6px 16px;border-radius:4px;border:none;
+  background:transparent;color:var(--dim);cursor:pointer;
+  transition:all .2s;
+}
+.nav-tab:hover{color:var(--white);background:rgba(255,255,255,.06);}
+.nav-tab.active{color:var(--amber);background:rgba(232,160,32,.12);}
+
+/* ── PAGES ──────────────────────────────────────────────────── */
+.page{display:none;animation:fadeUp .4s ease;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── PAGE 1: WALKTHROUGH ────────────────────────────────────── */
+.wt-hero{
+  text-align:center;
+  padding:80px 40px 40px;
+  max-width:780px;margin:0 auto;
+}
+.wt-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  color:var(--amber);margin-bottom:24px;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.wt-eyebrow::before,.wt-eyebrow::after{
+  content:'';display:block;width:32px;height:1px;background:var(--amber);opacity:.5;
+}
+.wt-title{
+  font-size:clamp(32px,5vw,56px);font-weight:800;line-height:1.08;
+  margin-bottom:20px;
+}
+.wt-title em{font-style:normal;color:var(--amber);}
+.wt-sub{
+  font-size:16px;color:var(--dim);line-height:1.7;
+  max-width:560px;margin:0 auto 48px;
+}
+
+/* Slide stepper */
+.wt-steps{
+  display:flex;gap:12px;justify-content:center;margin-bottom:48px;
+}
+.wt-step-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--slate);transition:all .3s;cursor:pointer;
+}
+.wt-step-dot.active{background:var(--amber);transform:scale(1.4);}
+
+.wt-slides{overflow:hidden;max-width:720px;margin:0 auto 48px;}
+.wt-slide{display:none;}
+.wt-slide.active{display:block;animation:fadeUp .35s ease;}
+
+.slide-card{
+  background:var(--navy2);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;
+  padding:40px;
+  text-align:left;
+}
+.slide-num{
+  font-family:var(--mono);font-size:11px;color:var(--amber);
+  letter-spacing:.15em;margin-bottom:16px;
+}
+.slide-title{font-size:22px;font-weight:700;margin-bottom:12px;}
+.slide-body{font-size:15px;color:var(--dim);line-height:1.75;}
+.slide-body strong{color:var(--white);}
+.slide-visual{
+  margin-top:28px;padding:20px;
+  background:rgba(255,255,255,.03);border-radius:10px;
+  border:1px solid rgba(255,255,255,.05);
+}
+
+/* Mini meter for slide 2 */
+.mini-meter{margin-bottom:16px;}
+.mini-meter-label{
+  display:flex;justify-content:space-between;
+  font-family:var(--mono);font-size:11px;margin-bottom:6px;
+}
+.mini-meter-label .val{color:var(--amber);}
+.mini-bar-track{
+  height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;
+}
+.mini-bar-fill{height:100%;border-radius:4px;transition:width 1s ease;}
+.mini-bar-fill.truth{background:linear-gradient(90deg,var(--steel),var(--sky));}
+.mini-bar-fill.harm-p{background:linear-gradient(90deg,#b05c1a,var(--amber));}
+.mini-bar-fill.harm-c{background:linear-gradient(90deg,#8b1a1a,var(--red));}
+
+/* Slide nav buttons */
+.wt-nav{display:flex;gap:12px;justify-content:center;align-items:center;}
+.btn{
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;
+  padding:12px 28px;border-radius:8px;border:none;cursor:pointer;
+  transition:all .2s;font-weight:700;
+}
+.btn-primary{
+  background:var(--amber);color:var(--navy);
+}
+.btn-primary:hover{background:var(--amber2);transform:translateY(-1px);}
+.btn-secondary{
+  background:transparent;color:var(--dim);
+  border:1px solid rgba(255,255,255,.12);
+}
+.btn-secondary:hover{color:var(--white);border-color:rgba(255,255,255,.3);}
+.btn-lg{padding:16px 40px;font-size:13px;}
+
+/* ── PAGE 2: DEMO ────────────────────────────────────────────── */
+.demo-wrap{max-width:860px;margin:0 auto;padding:60px 40px;}
+.section-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  color:var(--amber);margin-bottom:12px;
+}
+.section-title{font-size:26px;font-weight:700;margin-bottom:6px;}
+.section-sub{font-size:14px;color:var(--dim);margin-bottom:32px;line-height:1.6;}
+
+/* Scenario selector */
+.scenario-tabs{
+  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;
+}
+.stab{
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  padding:7px 14px;border-radius:6px;
+  border:1px solid rgba(255,255,255,.1);
+  background:transparent;color:var(--dim);cursor:pointer;transition:all .2s;
+}
+.stab:hover{border-color:rgba(255,255,255,.25);color:var(--white);}
+.stab.active{
+  border-color:var(--amber);color:var(--amber);
+  background:rgba(232,160,32,.1);
+}
+
+/* Main scenario card */
+.scenario-card{
+  background:var(--navy2);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;overflow:hidden;
+  margin-bottom:28px;
+}
+.sc-header{
+  padding:20px 28px 16px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;gap:12px;
+}
+.sc-tag{
+  font-family:var(--mono);font-size:10px;letter-spacing:.15em;
+  padding:4px 10px;border-radius:4px;
+  background:rgba(232,160,32,.15);color:var(--amber);
+}
+.sc-label{font-size:12px;color:var(--dim);font-family:var(--mono);}
+.sc-body{padding:24px 28px;}
+.sc-claim{
+  font-size:17px;line-height:1.65;color:var(--white);
+  font-style:italic;margin-bottom:0;
+}
+
+/* PANTH score panel */
+.panth-panel{
+  background:var(--navy2);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;padding:32px 28px;
+  margin-bottom:28px;
+}
+.panth-panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:28px;
+}
+.panth-panel-title{
+  font-family:var(--mono);font-size:12px;letter-spacing:.15em;color:var(--dim);
+}
+.panth-badge{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  padding:4px 10px;border-radius:4px;
+  background:rgba(46,170,114,.12);color:var(--green);
+  border:1px solid rgba(46,170,114,.2);
+}
+
+/* Meters */
+.meters-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
+@media(max-width:600px){.meters-row{grid-template-columns:1fr;}}
+
+.meter-card{
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;padding:20px;
+}
+.meter-name{
+  font-family:var(--mono);font-size:10px;letter-spacing:.15em;
+  color:var(--dim);margin-bottom:14px;display:flex;align-items:center;gap:6px;
+}
+.meter-name::before{
+  content:'';width:6px;height:6px;border-radius:50%;background:currentColor;
+  flex-shrink:0;
+}
+.meter-name.truth-color{color:var(--sky);}
+.meter-name.harm-color{color:var(--amber);}
+
+.gauge-wrap{position:relative;width:100%;height:8px;margin-bottom:10px;}
+.gauge-track{
+  height:100%;border-radius:4px;
+  background:rgba(255,255,255,.06);overflow:hidden;
+}
+.gauge-fill{
+  height:100%;border-radius:4px;
+  width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1);
+}
+.gauge-fill.truth{background:linear-gradient(90deg,#2a6090,var(--sky));}
+.gauge-fill.harm-personal{background:linear-gradient(90deg,#b05c1a,var(--amber));}
+.gauge-fill.harm-community{background:linear-gradient(90deg,#8b1a1a,var(--red));}
+
+.meter-score{
+  font-family:var(--mono);font-size:28px;font-weight:700;
+  letter-spacing:-.02em;
+}
+.meter-score .denom{font-size:14px;color:var(--dim);font-weight:400;}
+.meter-verdict{
+  font-size:12px;color:var(--dim);margin-top:4px;line-height:1.5;
+}
+
+/* Harm sub-meters */
+.harm-meters{
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;padding:20px;
+}
+.harm-sub{margin-bottom:14px;}
+.harm-sub:last-child{margin-bottom:0;}
+.harm-sub-label{
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  margin-bottom:7px;
+}
+.harm-sub-label .hval{color:var(--amber);}
+.harm-sub-bar{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;}
+.harm-sub-fill{height:100%;border-radius:3px;width:0;transition:width 1.3s cubic-bezier(.4,0,.2,1);}
+.harm-sub-fill.hp{background:linear-gradient(90deg,#b05c1a,var(--amber2));}
+.harm-sub-fill.hc{background:linear-gradient(90deg,#8b1a1a,#e05555);}
+.harm-sub-fill.hh{background:linear-gradient(90deg,#5b1a8b,#9b59d4);}
+
+/* Reasoning box */
+.reasoning-box{
+  background:rgba(255,255,255,.025);border-radius:10px;
+  padding:16px 20px;
+  border-left:3px solid rgba(110,174,214,.3);
+}
+.reasoning-box p{font-size:13px;color:var(--dim);line-height:1.7;}
+.reasoning-box strong{color:var(--sky);font-family:var(--mono);font-size:11px;letter-spacing:.1em;}
+
+/* Share decision */
+.share-decision{
+  background:var(--navy2);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;padding:32px 28px;
+}
+.share-prompt-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.15em;
+  color:var(--amber);margin-bottom:8px;
+}
+.share-prompt-text{
+  font-size:18px;font-weight:700;margin-bottom:24px;line-height:1.4;
+}
+
+/* Hesitancy timer */
+.timer-ring-wrap{
+  display:flex;align-items:center;gap:24px;margin-bottom:28px;
+}
+.timer-ring-svg{flex-shrink:0;}
+.timer-ring-track{fill:none;stroke:rgba(255,255,255,.06);stroke-width:4;}
+.timer-ring-fill{
+  fill:none;stroke:var(--amber);stroke-width:4;
+  stroke-linecap:round;
+  stroke-dasharray:138;stroke-dashoffset:138;
+  transform:rotate(-90deg);transform-origin:50% 50%;
+  transition:stroke-dashoffset .1s linear;
+}
+.timer-seconds{
+  font-family:var(--mono);font-size:28px;font-weight:700;color:var(--amber);
+  text-anchor:middle;dominant-baseline:central;
+}
+.timer-info{flex:1;}
+.timer-info p{font-size:13px;color:var(--dim);line-height:1.65;}
+.timer-info strong{color:var(--white);}
+
+.share-buttons{display:flex;gap:12px;flex-wrap:wrap;}
+.btn-share{
+  font-family:var(--mono);font-size:12px;letter-spacing:.08em;
+  padding:14px 28px;border-radius:8px;border:none;cursor:pointer;
+  transition:all .2s;font-weight:700;flex:1;min-width:160px;
+}
+.btn-share-no{
+  background:rgba(42,170,114,.15);color:var(--green);
+  border:1px solid rgba(42,170,114,.3);
+}
+.btn-share-no:hover{background:rgba(42,170,114,.25);}
+.btn-share-yes{
+  background:rgba(214,69,69,.12);color:#e07070;
+  border:1px solid rgba(214,69,69,.25);
+}
+.btn-share-yes:hover{background:rgba(214,69,69,.2);}
+
+/* Outcome card */
+.outcome-card{
+  border-radius:12px;padding:24px;margin-top:20px;
+  display:none;animation:fadeUp .3s ease;
+}
+.outcome-card.no{
+  background:rgba(42,170,114,.08);border:1px solid rgba(42,170,114,.2);
+}
+.outcome-card.yes{
+  background:rgba(214,69,69,.08);border:1px solid rgba(214,69,69,.2);
+}
+.outcome-icon{font-size:28px;margin-bottom:8px;}
+.outcome-title{font-size:16px;font-weight:700;margin-bottom:6px;}
+.outcome-body{font-size:13px;color:var(--dim);line-height:1.65;}
+
+/* ── PAGE 3: SCORING TOOL ───────────────────────────────────── */
+.tool-wrap{max-width:780px;margin:0 auto;padding:60px 40px;}
+
+.api-setup{
+  background:var(--navy2);border:1px solid rgba(232,160,32,.2);
+  border-radius:12px;padding:20px 24px;margin-bottom:32px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.api-setup-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--amber);
+  flex-shrink:0;
+}
+.api-key-input{
+  flex:1;min-width:220px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);
+  border-radius:6px;padding:9px 14px;
+  font-family:var(--mono);font-size:12px;color:var(--white);
+  outline:none;transition:border .2s;letter-spacing:.05em;
+}
+.api-key-input:focus{border-color:rgba(232,160,32,.4);}
+.api-key-input::placeholder{color:var(--dim);}
+.api-status{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  padding:5px 12px;border-radius:4px;flex-shrink:0;
+}
+.api-status.set{background:rgba(42,170,114,.12);color:var(--green);}
+.api-status.unset{background:rgba(232,160,32,.1);color:var(--amber);}
+
+.claim-input-card{
+  background:var(--navy2);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;padding:28px;margin-bottom:24px;
+}
+.claim-input-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.15em;
+  color:var(--dim);margin-bottom:12px;
+}
+.claim-textarea{
+  width:100%;
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:8px;padding:16px;
+  font-family:var(--sans);font-size:15px;color:var(--white);
+  resize:vertical;min-height:120px;outline:none;
+  transition:border .2s;line-height:1.65;
+}
+.claim-textarea:focus{border-color:rgba(110,174,214,.3);}
+.claim-textarea::placeholder{color:rgba(143,169,191,.4);}
+
+.quick-fills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.qfill{
+  font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+  padding:5px 12px;border-radius:4px;
+  border:1px solid rgba(255,255,255,.08);
+  background:transparent;color:var(--dim);cursor:pointer;transition:all .2s;
+}
+.qfill:hover{border-color:rgba(255,255,255,.2);color:var(--white);}
+
+.analyse-row{
+  display:flex;align-items:center;gap:16px;margin-bottom:28px;
+}
+.btn-analyse{
+  font-family:var(--mono);font-size:12px;letter-spacing:.1em;
+  padding:14px 36px;border-radius:8px;border:none;
+  background:var(--amber);color:var(--navy);
+  cursor:pointer;font-weight:700;transition:all .2s;
+}
+.btn-analyse:hover{background:var(--amber2);transform:translateY(-1px);}
+.btn-analyse:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.analyse-hint{font-size:12px;color:var(--dim);}
+
+/* Loading spinner */
+.spinner{
+  display:none;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:12px;color:var(--dim);
+}
+.spinner.active{display:flex;}
+.spin-dots{display:flex;gap:4px;}
+.spin-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--amber);
+  animation:pulse 1.2s ease-in-out infinite;
+}
+.spin-dot:nth-child(2){animation-delay:.2s;}
+.spin-dot:nth-child(3){animation-delay:.4s;}
+@keyframes pulse{0%,80%,100%{transform:scale(.7);opacity:.4;}40%{transform:scale(1);opacity:1;}}
+
+/* Live results panel */
+#live-results{display:none;}
+#live-results.active{display:block;animation:fadeUp .4s ease;}
+
+/* ── FOOTER ──────────────────────────────────────────────────── */
+footer{
+  text-align:center;padding:40px;
+  border-top:1px solid rgba(255,255,255,.04);
+  margin-top:60px;
+}
+footer p{font-family:var(--mono);font-size:11px;color:rgba(143,169,191,.4);line-height:1.8;}
+footer a{color:var(--dim);text-decoration:none;}
+
+/* ── MISC UTILITIES ──────────────────────────────────────────── */
+.divider{height:1px;background:rgba(255,255,255,.06);margin:32px 0;}
+.text-amber{color:var(--amber);}
+.text-dim{color:var(--dim);}
+.mono{font-family:var(--mono);}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ── NAV ────────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">PANTH <span>/ PROTOTYPE</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('walkthrough')">About</button>
+    <button class="nav-tab" onclick="showPage('demo')">Demo</button>
+    <button class="nav-tab" onclick="showPage('tool')">Analyser</button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- PAGE 1: WALKTHROUGH                                         -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="page-walkthrough" class="page active">
+  <div class="wt-hero">
+    <div class="wt-eyebrow">Research Prototype</div>
+    <h1 class="wt-title">Stop, Think<br>and <em>Share</em></h1>
+    <p class="wt-sub">A proof-of-concept nudging platform that displays both a Truth score and a Harm score before you share health misinformation — helping you pause, reflect, and decide.</p>
+    <div class="wt-steps">
+      <div class="wt-step-dot active" onclick="goSlide(0)"></div>
+      <div class="wt-step-dot" onclick="goSlide(1)"></div>
+      <div class="wt-step-dot" onclick="goSlide(2)"></div>
+    </div>
+  </div>
+
+  <div class="wt-slides">
+    <!-- Slide 1 -->
+    <div class="wt-slide active" id="slide-0">
+      <div class="slide-card">
+        <div class="slide-num">01 / THE PROBLEM</div>
+        <div class="slide-title">Fact-checkers label truth — but not harm</div>
+        <div class="slide-body">
+          During the COVID-19 pandemic, social media platforms labelled vaccine misinformation with truth ratings. But a message can be <strong>false and low-harm</strong> (a harmless myth) or <strong>false and extremely harmful</strong> (driving medical decisions).<br><br>
+          Research shows that people's <strong>hesitancy to share</strong> misinformation is driven not just by whether they believe it, but by their perception of the <strong>harm it could cause</strong> to others. Current systems miss this second dimension entirely.
+        </div>
+        <div class="slide-visual">
+          <div class="mini-meter">
+            <div class="mini-meter-label"><span>TRUTH-O-METER (existing)</span><span class="val">2.5 / 10</span></div>
+            <div class="mini-bar-track"><div class="mini-bar-fill truth" style="width:25%"></div></div>
+          </div>
+          <div style="text-align:center;font-family:var(--mono);font-size:11px;color:var(--dim);padding:6px 0;">+</div>
+          <div class="mini-meter">
+            <div class="mini-meter-label"><span>HARM-O-METER (proposed)</span><span class="val" style="color:var(--amber)">8.4 / 10</span></div>
+            <div class="mini-bar-track"><div class="mini-bar-fill harm-c" style="width:84%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="wt-slide" id="slide-1">
+      <div class="slide-card">
+        <div class="slide-num">02 / THE DESIGN</div>
+        <div class="slide-title">PANTH: Platform for Automated Nudging of Truth and Harm</div>
+        <div class="slide-body">
+          PANTH combines <strong>human fact-checkers</strong> and <strong>AI language models</strong> to extract and display two independent scores for every piece of content before sharing:<br><br>
+          <strong>Truth-O-Meter</strong> — how verified is the claim?<br>
+          <strong>Harm-O-Meter</strong> — how much harm could sharing this cause, across personal health, psychological, and community dimensions?<br><br>
+          Together these scores form a <strong>pre-share nudge</strong> — a "Stop, Think" moment grounded in the empirical finding that community harm perception is the strongest predictor of sharing hesitancy.
+        </div>
+        <div class="slide-visual" style="display:flex;gap:20px;flex-wrap:wrap;">
+          <div style="flex:1;min-width:140px;text-align:center;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--sky);letter-spacing:.12em;margin-bottom:8px;">TRUTH</div>
+            <div style="font-size:36px;font-weight:800;font-family:var(--mono);color:var(--sky);">2.5</div>
+            <div style="font-size:11px;color:var(--dim);font-family:var(--mono);">/10 — MOSTLY FALSE</div>
+          </div>
+          <div style="width:1px;background:rgba(255,255,255,.06);"></div>
+          <div style="flex:1;min-width:140px;text-align:center;">
+            <div style="font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:.12em;margin-bottom:8px;">HARM</div>
+            <div style="font-size:36px;font-weight:800;font-family:var(--mono);color:var(--amber);">8.4</div>
+            <div style="font-size:11px;color:var(--dim);font-family:var(--mono);">/10 — HIGH RISK</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="wt-slide" id="slide-2">
+      <div class="slide-card">
+        <div class="slide-num">03 / THE EVIDENCE</div>
+        <div class="slide-title">Grounded in a longitudinal study of 1,219 participants</div>
+        <div class="slide-body">
+          A two-wave survey exposed US adults to 10 COVID-19 vaccine misinformation scenarios. Key findings driving the PANTH design:<br><br>
+          <strong>Community harm → hesitancy</strong> — the strongest direct harm pathway (H5 ✓)<br>
+          <strong>Belief bypasses harm reasoning</strong> — direct belief-to-sharing shortcut (H2d ✓, p ≤ .001)<br>
+          <strong>Verification reinforces bias</strong> — fact-checks strengthen existing beliefs via confirmation bias (H1 ✓)<br><br>
+          PANTH's dual-score design is <strong>derived from each of these findings</strong>, not bolted on post-hoc. The Harm-O-Meter targets the community harm pathway; the pre-share prompt interrupts the belief shortcut.
+        </div>
+        <div class="slide-visual">
+          <div style="font-family:var(--mono);font-size:11px;color:var(--dim);text-align:center;">
+            Verification → Belief → Harm Perception → <span style="color:var(--amber)">Probabilistic Hesitant Sharing (PHS)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wt-nav">
+    <button class="btn btn-secondary" id="btn-prev" onclick="prevSlide()" style="opacity:.3;pointer-events:none;">← Prev</button>
+    <button class="btn btn-primary" id="btn-next" onclick="nextSlide()">Next →</button>
+    <button class="btn btn-primary btn-lg" id="btn-try" onclick="showPage('demo')" style="display:none;">Try the Demo →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- PAGE 2: DEMO                                                -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="page-demo" class="page">
+  <div class="demo-wrap">
+    <div class="section-eyebrow">Live Demo</div>
+    <h2 class="section-title">PANTH in action</h2>
+    <p class="section-sub">Select one of the 10 vaccine misinformation scenarios from the study. PANTH displays both the Truth-O-Meter and Harm-O-Meter scores, then presents the pre-share nudge.</p>
+
+    <div class="scenario-tabs" id="scenario-tabs"></div>
+
+    <div class="scenario-card" id="demo-scenario-card">
+      <div class="sc-header">
+        <div class="sc-tag" id="demo-tag">S1</div>
+        <div class="sc-label">VACCINE MISINFORMATION SCENARIO</div>
+      </div>
+      <div class="sc-body">
+        <p class="sc-claim" id="demo-claim"></p>
+      </div>
+    </div>
+
+    <!-- PANTH scores -->
+    <div class="panth-panel" id="demo-panth-panel">
+      <div class="panth-panel-header">
+        <div class="panth-panel-title">PANTH EVALUATION</div>
+        <div class="panth-badge">AI + HUMAN VERIFIED</div>
+      </div>
+
+      <div class="meters-row">
+        <div class="meter-card">
+          <div class="meter-name truth-color">TRUTH-O-METER</div>
+          <div class="gauge-wrap"><div class="gauge-track"><div class="gauge-fill truth" id="demo-truth-bar"></div></div></div>
+          <div class="meter-score"><span id="demo-truth-score">—</span><span class="denom"> / 10</span></div>
+          <div class="meter-verdict" id="demo-truth-verdict"></div>
+        </div>
+        <div class="meter-card">
+          <div class="meter-name harm-color">HARM-O-METER</div>
+          <div class="gauge-wrap"><div class="gauge-track"><div class="gauge-fill harm-personal" id="demo-harm-bar"></div></div></div>
+          <div class="meter-score"><span id="demo-harm-score">—</span><span class="denom"> / 10</span></div>
+          <div class="meter-verdict" id="demo-harm-verdict"></div>
+        </div>
+      </div>
+
+      <div class="harm-meters">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--dim);margin-bottom:14px;">HARM BREAKDOWN</div>
+        <div class="harm-sub">
+          <div class="harm-sub-label"><span>PERSONAL HEALTH HARM</span><span class="hval" id="demo-hh">—</span></div>
+          <div class="harm-sub-bar"><div class="harm-sub-fill hh" id="demo-hh-bar"></div></div>
+        </div>
+        <div class="harm-sub">
+          <div class="harm-sub-label"><span>PSYCHOLOGICAL HARM</span><span class="hval" id="demo-hp">—</span></div>
+          <div class="harm-sub-bar"><div class="harm-sub-fill hp" id="demo-hp-bar"></div></div>
+        </div>
+        <div class="harm-sub">
+          <div class="harm-sub-label"><span>COMMUNITY HARM</span><span class="hval" id="demo-hc">—</span></div>
+          <div class="harm-sub-bar"><div class="harm-sub-fill hc" id="demo-hc-bar"></div></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="reasoning-box">
+        <p><strong>WHY THESE SCORES</strong></p>
+        <p id="demo-reasoning" style="margin-top:8px;"></p>
+      </div>
+    </div>
+
+    <!-- Share decision -->
+    <div class="share-decision" id="demo-share">
+      <div class="share-prompt-label">⚠ PRE-SHARE PROMPT</div>
+      <div class="share-prompt-text">Before sharing this — are you sure?</div>
+      <div class="timer-ring-wrap">
+        <svg class="timer-ring-svg" width="64" height="64" viewBox="0 0 48 48">
+          <circle class="timer-ring-track" cx="24" cy="24" r="22"/>
+          <circle class="timer-ring-fill" id="demo-timer-ring" cx="24" cy="24" r="22"/>
+          <text class="timer-seconds" x="24" y="24" id="demo-timer-text" font-family="Space Mono" font-size="13" fill="#e8a020" text-anchor="middle" dominant-baseline="central">9</text>
+        </svg>
+        <div class="timer-info">
+          <p><strong>Take 9 seconds.</strong> Research shows that pausing before sharing — even briefly — significantly reduces misinformation spread. With a Harm score of <span id="demo-harm-inline" class="text-amber">—</span>/10, sharing this could reach your community.</p>
+        </div>
+      </div>
+      <div class="share-buttons">
+        <button class="btn-share btn-share-no" onclick="makeDecision('no')">✓ I will NOT share this</button>
+        <button class="btn-share btn-share-yes" onclick="makeDecision('yes')">I understand the risk — share anyway</button>
+      </div>
+      <div class="outcome-card no" id="outcome-no">
+        <div class="outcome-icon">✓</div>
+        <div class="outcome-title">Good decision.</div>
+        <div class="outcome-body">You chose not to share this content. With a community harm score this high, not sharing helps protect your network from potential misinformation-driven harm. This is exactly the kind of hesitancy PANTH is designed to promote.</div>
+      </div>
+      <div class="outcome-card yes" id="outcome-yes">
+        <div class="outcome-icon">⚠</div>
+        <div class="outcome-title">You chose to share.</div>
+        <div class="outcome-body">You decided to share despite the harm warning. Real-world platforms using PANTH could log this decision, offer a second chance to reconsider, or flag the content for community review. The goal is not to block sharing but to ensure the decision is conscious.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════ -->
+<!-- PAGE 3: LIVE SCORING TOOL                                   -->
+<!-- ════════════════════════════════════════════════════════════ -->
+<div id="page-tool" class="page">
+  <div class="tool-wrap">
+    <div class="section-eyebrow">Live Analyser</div>
+    <h2 class="section-title">Score any claim</h2>
+    <p class="section-sub">Enter any health claim or news headline. PANTH will call Claude to generate a Truth score, Harm score, and reasoning — exactly as the platform would in production.</p>
+
+    <div class="api-setup">
+      <div class="api-setup-label">ANTHROPIC API KEY</div>
+      <input type="password" class="api-key-input" id="api-key-input"
+        placeholder="sk-ant-..." oninput="updateApiStatus()">
+      <div class="api-status unset" id="api-status">NOT SET</div>
+    </div>
+
+    <div class="claim-input-card">
+      <div class="claim-input-label">CLAIM OR HEADLINE TO ANALYSE</div>
+      <textarea class="claim-textarea" id="claim-input"
+        placeholder="Paste any health-related claim, news headline, or social media post here..."></textarea>
+      <div class="quick-fills">
+        <span style="font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em;align-self:center;">QUICK FILL:</span>
+        <button class="qfill" onclick="quickFill(0)">Altered DNA vaccine</button>
+        <button class="qfill" onclick="quickFill(1)">Nanochip tracking</button>
+        <button class="qfill" onclick="quickFill(2)">Mandatory vaccination law</button>
+        <button class="qfill" onclick="quickFill(3)">Custom claim</button>
+      </div>
+    </div>
+
+    <div class="analyse-row">
+      <button class="btn-analyse" id="btn-analyse" onclick="runAnalysis()">▶ Analyse</button>
+      <div class="spinner" id="spinner">
+        <div class="spin-dots">
+          <div class="spin-dot"></div><div class="spin-dot"></div><div class="spin-dot"></div>
+        </div>
+        <span>Calling Claude API...</span>
+      </div>
+      <span class="analyse-hint" id="analyse-hint">Powered by claude-sonnet-4-6</span>
+    </div>
+
+    <div id="live-results">
+      <div class="scenario-card" style="margin-bottom:20px;">
+        <div class="sc-header">
+          <div class="sc-tag">INPUT</div>
+          <div class="sc-label">CLAIM BEING EVALUATED</div>
+        </div>
+        <div class="sc-body">
+          <p class="sc-claim" id="live-claim-display"></p>
+        </div>
+      </div>
+
+      <div class="panth-panel">
+        <div class="panth-panel-header">
+          <div class="panth-panel-title">PANTH EVALUATION — LIVE</div>
+          <div class="panth-badge">CLAUDE API</div>
+        </div>
+        <div class="meters-row">
+          <div class="meter-card">
+            <div class="meter-name truth-color">TRUTH-O-METER</div>
+            <div class="gauge-wrap"><div class="gauge-track"><div class="gauge-fill truth" id="live-truth-bar"></div></div></div>
+            <div class="meter-score"><span id="live-truth-score">—</span><span class="denom"> / 10</span></div>
+            <div class="meter-verdict" id="live-truth-verdict"></div>
+          </div>
+          <div class="meter-card">
+            <div class="meter-name harm-color">HARM-O-METER</div>
+            <div class="gauge-wrap"><div class="gauge-track"><div class="gauge-fill harm-community" id="live-harm-bar"></div></div></div>
+            <div class="meter-score"><span id="live-harm-score">—</span><span class="denom"> / 10</span></div>
+            <div class="meter-verdict" id="live-harm-verdict"></div>
+          </div>
+        </div>
+        <div class="harm-meters">
+          <div style="font-family:var(--mono);font-size:10px;letter-spacing:.15em;color:var(--dim);margin-bottom:14px;">HARM BREAKDOWN</div>
+          <div class="harm-sub">
+            <div class="harm-sub-label"><span>PERSONAL HEALTH HARM</span><span class="hval" id="live-hh">—</span></div>
+            <div class="harm-sub-bar"><div class="harm-sub-fill hh" id="live-hh-bar"></div></div>
+          </div>
+          <div class="harm-sub">
+            <div class="harm-sub-label"><span>PSYCHOLOGICAL HARM</span><span class="hval" id="live-hp">—</span></div>
+            <div class="harm-sub-bar"><div class="harm-sub-fill hp" id="live-hp-bar"></div></div>
+          </div>
+          <div class="harm-sub">
+            <div class="harm-sub-label"><span>COMMUNITY HARM</span><span class="hval" id="live-hc">—</span></div>
+            <div class="harm-sub-bar"><div class="harm-sub-fill hc" id="live-hc-bar"></div></div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="reasoning-box">
+          <p><strong>WHY THESE SCORES</strong></p>
+          <p id="live-reasoning" style="margin-top:8px;"></p>
+        </div>
+      </div>
+
+      <!-- Share decision for live tool -->
+      <div class="share-decision" id="live-share">
+        <div class="share-prompt-label">⚠ PRE-SHARE PROMPT</div>
+        <div class="share-prompt-text">Before sharing this — are you sure?</div>
+        <div class="timer-ring-wrap">
+          <svg class="timer-ring-svg" width="64" height="64" viewBox="0 0 48 48">
+            <circle class="timer-ring-track" cx="24" cy="24" r="22"/>
+            <circle class="timer-ring-fill" id="live-timer-ring" cx="24" cy="24" r="22"/>
+            <text x="24" y="24" id="live-timer-text" font-family="Space Mono" font-size="13" fill="#e8a020" text-anchor="middle" dominant-baseline="central">9</text>
+          </svg>
+          <div class="timer-info">
+            <p><strong>Take 9 seconds.</strong> Harm score: <span id="live-harm-inline" class="text-amber">—</span>/10. This content could affect your community if shared. The research behind PANTH shows community harm perception is the strongest driver of sharing hesitancy.</p>
+          </div>
+        </div>
+        <div class="share-buttons">
+          <button class="btn-share btn-share-no" onclick="makeDecisionLive('no')">✓ I will NOT share this</button>
+          <button class="btn-share btn-share-yes" onclick="makeDecisionLive('yes')">I understand the risk — share anyway</button>
+        </div>
+        <div class="outcome-card no" id="live-outcome-no">
+          <div class="outcome-icon">✓</div>
+          <div class="outcome-title">Good decision.</div>
+          <div class="outcome-body">You chose not to share. PANTH's dual-score nudge worked as intended — making both the truth status and the harm potential salient before the sharing decision was finalised.</div>
+        </div>
+        <div class="outcome-card yes" id="live-outcome-yes">
+          <div class="outcome-icon">⚠</div>
+          <div class="outcome-title">You chose to share.</div>
+          <div class="outcome-body">The decision is logged. A deployed version of PANTH would offer a second confirmation, flag the share for community review, and track sharing hesitancy scores across the population over time.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ──────────────────────────────────────────────────── -->
+<footer>
+  <p>PANTH Research Prototype · "Stop, Think and Share" · ISR Submission ISRE-2025-2523<br>
+  Powered by <a href="https://anthropic.com">Claude API (Anthropic)</a> · For academic demonstration purposes only</p>
+</footer>
+
+</div><!-- #app -->
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────
+const SCENARIOS = [
+  {
+    id:'S1', label:'Altered DNA',
+    claim:'The COVID-19 vaccines permanently and irreversibly change your DNA.',
+    truth:1.5, harm:8.2,
+    hh:7.5, hp:6.8, hc:8.9,
+    truthVerdict:'Scientifically false. No COVID-19 vaccine alters human DNA. mRNA vaccines never enter the cell nucleus.',
+    harmVerdict:'High harm. False DNA claims drive vaccine refusal with serious individual and public health consequences.',
+    reasoning:'This claim is unambiguously false and scientifically illiterate — mRNA cannot edit DNA. Its harm potential is very high: it directly discourages vaccination, which has measurable public health consequences (reduced herd immunity, increased hospitalisation). Community harm is highest because vaccine hesitancy driven by this claim spreads socially through close networks.'
+  },
+  {
+    id:'S2', label:"Women's Infertility",
+    claim:'The COVID-19 vaccines will cause women infertility and they cannot become pregnant or have babies in the future.',
+    truth:1.0, harm:8.8,
+    hh:8.2, hp:7.9, hc:8.5,
+    truthVerdict:'False. No clinical evidence links COVID-19 vaccines to infertility. Fertility rates among vaccinated individuals are normal.',
+    harmVerdict:'Very high harm. Targets reproductive anxiety, driving vaccine refusal particularly among young women.',
+    reasoning:'This claim is false and particularly pernicious because it targets reproductive anxieties in a demographic that was already sceptical of vaccine safety data. Health harm is very high as vaccine hesitancy driven by this claim directly endangers maternal and infant health. Psychological harm is elevated due to the emotional weight of infertility fears.'
+  },
+  {
+    id:'S3', label:'Children Autism',
+    claim:'The COVID-19 vaccines will cause autism spectrum disorder (ASD) in children, which impacts their nervous systems and limits their communication ability.',
+    truth:0.5, harm:9.1,
+    hh:8.8, hp:7.2, hc:9.3,
+    truthVerdict:'False. The autism-vaccine link has been thoroughly debunked. The original 1998 Wakefield study was retracted for fraud.',
+    harmVerdict:'Extremely high harm. Recycled autism myth discourages vaccination in children with severe public health consequences.',
+    reasoning:'This is a reactivation of the most dangerous vaccine myth in modern public health history. Community harm is at its peak: childhood vaccine hesitancy driven by this claim has contributed to measles and other preventable disease outbreaks. The claim is demonstrably false, the original study was fraudulent, and continued circulation has measurable mortality consequences.'
+  },
+  {
+    id:'S5', label:'Dead Nurse',
+    claim:"A 42-year-old nurse was found dead 8 to 10 hours after getting the COVID-19 vaccine.",
+    truth:3.5, harm:7.6,
+    hh:6.8, hp:7.1, hc:7.8,
+    truthVerdict:'Misleading. The claim describes a real incident but omits that no causal link to the vaccine was established by investigation.',
+    harmVerdict:'High harm. Emotionally vivid cases drive disproportionate fear responses and vaccine hesitancy.',
+    reasoning:'This scenario is notable because it involves a real event that was misrepresented. The truth score is higher than pure fabrications because a nurse did die — but the causal claim (vaccine caused the death) was not supported by autopsy or investigation. Psychologically, vivid personal narratives like this ("a nurse, a person, 8 hours later") are cognitively sticky and highly persuasive, driving the elevated harm score despite lower falsity.'
+  },
+  {
+    id:'S8', label:'Available Vaccines',
+    claim:'There were more than 410 leftover COVID-19 vaccine doses the public could get at Brooklyn Army Terminal on January 14, 2021, and no qualification check.',
+    truth:5.5, harm:5.8,
+    hh:4.2, hp:4.5, hc:6.8,
+    truthVerdict:'Partially verifiable. The event occurred but details about no qualification checks were disputed. Context matters significantly.',
+    harmVerdict:'Moderate harm. Could cause crowding and allocation inequity but lower direct health risk than false medical claims.',
+    reasoning:'This scenario sits in the grey zone — it describes a real event with some factual basis but potentially misleading framing about eligibility. Harm is moderate rather than high: the primary concern is fairness (jumping the vaccine queue) and potential crowding, not direct health harm from the claim\'s content. Community harm is the dominant dimension as queue-jumping undermines trust in equitable distribution systems.'
+  },
+  {
+    id:'S9', label:'Nanochips',
+    claim:'The COVID-19 vaccines contain nanochips that track vaccinated people and send information to officials.',
+    truth:0.5, harm:7.8,
+    hh:5.5, hp:8.2, hc:8.5,
+    truthVerdict:'Completely false. No nanochip technology of this kind exists or is deliverable via injection.',
+    harmVerdict:'High harm. Conspiracy claims drive profound vaccine refusal and erode public trust in health institutions.',
+    reasoning:'This is a conspiracy theory with zero factual basis. Psychological harm is particularly elevated because surveillance fears tap into deep anxieties about bodily autonomy and government control, making this emotionally more destabilising than straightforward medical misinformation. Community harm is high because conspiracy narratives are highly shareable and self-reinforcing in social networks.'
+  }
+];
+
+const QUICK_CLAIMS = [
+  'The COVID-19 vaccines permanently and irreversibly change your DNA.',
+  'The COVID-19 vaccines contain nanochips that track vaccinated people.',
+  'Federal law will require mandatory COVID-19 vaccination for all Americans.',
+  ''
+];
+
+// ── SLIDE NAVIGATION ─────────────────────────────────────────────────────
+let currentSlide = 0;
+const TOTAL_SLIDES = 3;
+
+function goSlide(n) {
+  document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+  document.querySelectorAll('.wt-step-dot')[currentSlide].classList.remove('active');
+  currentSlide = n;
+  document.getElementById(`slide-${currentSlide}`).classList.add('active');
+  document.querySelectorAll('.wt-step-dot')[currentSlide].classList.add('active');
+  updateSlideNav();
+}
+function nextSlide() { if (currentSlide < TOTAL_SLIDES - 1) goSlide(currentSlide + 1); }
+function prevSlide() { if (currentSlide > 0) goSlide(currentSlide - 1); }
+function updateSlideNav() {
+  const prev = document.getElementById('btn-prev');
+  const next = document.getElementById('btn-next');
+  const tryBtn = document.getElementById('btn-try');
+  prev.style.opacity = currentSlide === 0 ? '.3' : '1';
+  prev.style.pointerEvents = currentSlide === 0 ? 'none' : 'auto';
+  const isLast = currentSlide === TOTAL_SLIDES - 1;
+  next.style.display = isLast ? 'none' : 'inline-block';
+  tryBtn.style.display = isLast ? 'inline-block' : 'none';
+}
+
+// ── PAGE NAVIGATION ───────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  const tabs = { walkthrough:0, demo:1, tool:2 };
+  document.querySelectorAll('.nav-tab')[tabs[name]].classList.add('active');
+  if (name === 'demo') initDemo();
+}
+
+// ── DEMO PAGE ─────────────────────────────────────────────────────────────
+let demoTimerInterval = null;
+let demoTimerVal = 9;
+
+function initDemo() {
+  const tabsEl = document.getElementById('scenario-tabs');
+  if (tabsEl.children.length > 0) return; // already built
+  SCENARIOS.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'stab' + (i === 0 ? ' active' : '');
+    btn.textContent = s.id + ' · ' + s.label;
+    btn.onclick = () => loadScenario(i);
+    tabsEl.appendChild(btn);
+  });
+  loadScenario(0);
+}
+
+function loadScenario(idx) {
+  const s = SCENARIOS[idx];
+  document.querySelectorAll('.stab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.getElementById('demo-tag').textContent = s.id;
+  document.getElementById('demo-claim').textContent = s.claim;
+
+  // Reset outcomes
+  document.getElementById('outcome-no').style.display = 'none';
+  document.getElementById('outcome-yes').style.display = 'none';
+
+  // Animate scores with slight delay for effect
+  setTimeout(() => {
+    fillMeter('demo-truth-bar', s.truth, 10, true);
+    fillMeter('demo-harm-bar', s.harm, 10, false);
+    fillSubBar('demo-hh-bar', s.hh, 10);
+    fillSubBar('demo-hp-bar', s.hp, 10);
+    fillSubBar('demo-hc-bar', s.hc, 10);
+    setEl('demo-truth-score', s.truth.toFixed(1));
+    setEl('demo-harm-score', s.harm.toFixed(1));
+    setEl('demo-truth-verdict', s.truthVerdict);
+    setEl('demo-harm-verdict', s.harmVerdict);
+    setEl('demo-hh', s.hh.toFixed(1)+'/10');
+    setEl('demo-hp', s.hp.toFixed(1)+'/10');
+    setEl('demo-hc', s.hc.toFixed(1)+'/10');
+    setEl('demo-reasoning', s.reasoning);
+    setEl('demo-harm-inline', s.harm.toFixed(1));
+    startTimer('demo-timer-ring', 'demo-timer-text');
+  }, 100);
+}
+
+function startTimer(ringId, textId) {
+  if (demoTimerInterval) clearInterval(demoTimerInterval);
+  demoTimerVal = 9;
+  const CIRCUMFERENCE = 138;
+  document.getElementById(textId).textContent = demoTimerVal;
+  document.getElementById(ringId).style.strokeDashoffset = 0;
+  demoTimerInterval = setInterval(() => {
+    demoTimerVal--;
+    if (demoTimerVal < 0) { clearInterval(demoTimerInterval); return; }
+    document.getElementById(textId).textContent = demoTimerVal;
+    const progress = (9 - demoTimerVal) / 9;
+    document.getElementById(ringId).style.strokeDashoffset = CIRCUMFERENCE * progress;
+  }, 1000);
+}
+
+function makeDecision(choice) {
+  document.getElementById('outcome-no').style.display = choice === 'no' ? 'block' : 'none';
+  document.getElementById('outcome-yes').style.display = choice === 'yes' ? 'block' : 'none';
+  document.getElementById('outcome-' + choice).scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+function makeDecisionLive(choice) {
+  document.getElementById('live-outcome-no').style.display = choice === 'no' ? 'block' : 'none';
+  document.getElementById('live-outcome-yes').style.display = choice === 'yes' ? 'block' : 'none';
+}
+
+// ── LIVE ANALYSIS ─────────────────────────────────────────────────────────
+function updateApiStatus() {
+  const key = document.getElementById('api-key-input').value.trim();
+  const status = document.getElementById('api-status');
+  if (key.startsWith('sk-ant-') && key.length > 20) {
+    status.textContent = 'SET ✓';
+    status.className = 'api-status set';
+  } else {
+    status.textContent = 'NOT SET';
+    status.className = 'api-status unset';
+  }
+}
+
+function quickFill(idx) {
+  const ta = document.getElementById('claim-input');
+  if (idx === 3) {
+    ta.value = '';
+    ta.focus();
+  } else {
+    ta.value = QUICK_CLAIMS[idx];
+  }
+}
+
+async function runAnalysis() {
+  const apiKey = document.getElementById('api-key-input').value.trim();
+  const claim = document.getElementById('claim-input').value.trim();
+
+  if (!apiKey || !apiKey.startsWith('sk-ant-')) {
+    alert('Please enter your Anthropic API key (starting with sk-ant-) above.');
+    return;
+  }
+  if (!claim) {
+    alert('Please enter a claim to analyse.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-analyse');
+  const spinner = document.getElementById('spinner');
+  const results = document.getElementById('live-results');
+
+  btn.disabled = true;
+  spinner.classList.add('active');
+  results.classList.remove('active');
+  document.getElementById('live-outcome-no').style.display = 'none';
+  document.getElementById('live-outcome-yes').style.display = 'none';
+
+  const SYSTEM = `You are PANTH — the Platform for Automated Nudging of Truth and Harm. 
+You evaluate health-related claims and misinformation for a research platform studying vaccine misinformation sharing hesitancy.
+
+For any claim provided, you must return ONLY a valid JSON object with this exact structure:
+{
+  "truth_score": <number 0-10, where 0=completely false, 10=completely true>,
+  "harm_score": <number 0-10, overall harm potential if widely shared>,
+  "harm_health": <number 0-10, personal health harm>,
+  "harm_psychological": <number 0-10, psychological/emotional harm>,
+  "harm_community": <number 0-10, community/public health harm>,
+  "truth_verdict": "<one sentence: label and brief explanation of truth status>",
+  "harm_verdict": "<one sentence: harm level label and brief explanation>",
+  "reasoning": "<2-3 sentences explaining why you gave these scores, grounded in public health evidence>"
+}
+
+Return ONLY the JSON object. No preamble, no markdown, no explanation outside the JSON.`;
+
+  const USER = `Evaluate this claim for the PANTH platform:\n\n"${claim}"`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 600,
+        system: SYSTEM,
+        messages: [{ role: 'user', content: USER }]
+      })
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error?.message || `API error ${response.status}`);
+    }
+
+    const data = await response.json();
+    const raw = data.content[0].text.trim();
+    // Strip any markdown fences if present
+    const jsonStr = raw.replace(/^```json?\s*/i,'').replace(/\s*```$/,'').trim();
+    const result = JSON.parse(jsonStr);
+
+    // Populate results
+    setEl('live-claim-display', claim);
+    setTimeout(() => {
+      fillMeter('live-truth-bar', result.truth_score, 10, true);
+      fillMeter('live-harm-bar', result.harm_score, 10, false);
+      fillSubBar('live-hh-bar', result.harm_health, 10);
+      fillSubBar('live-hp-bar', result.harm_psychological, 10);
+      fillSubBar('live-hc-bar', result.harm_community, 10);
+      setEl('live-truth-score', result.truth_score.toFixed(1));
+      setEl('live-harm-score', result.harm_score.toFixed(1));
+      setEl('live-truth-verdict', result.truth_verdict);
+      setEl('live-harm-verdict', result.harm_verdict);
+      setEl('live-hh', result.harm_health.toFixed(1)+'/10');
+      setEl('live-hp', result.harm_psychological.toFixed(1)+'/10');
+      setEl('live-hc', result.harm_community.toFixed(1)+'/10');
+      setEl('live-reasoning', result.reasoning);
+      setEl('live-harm-inline', result.harm_score.toFixed(1));
+      startTimerLive();
+    }, 100);
+
+    results.classList.add('active');
+    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  } catch(e) {
+    alert('Error: ' + e.message + '\n\nMake sure your API key is correct and has access to claude-sonnet-4-6.');
+  } finally {
+    btn.disabled = false;
+    spinner.classList.remove('active');
+  }
+}
+
+let liveTimerInterval = null;
+function startTimerLive() {
+  if (liveTimerInterval) clearInterval(liveTimerInterval);
+  let val = 9;
+  const CIRCUMFERENCE = 138;
+  const ring = document.getElementById('live-timer-ring');
+  const txt = document.getElementById('live-timer-text');
+  txt.textContent = val;
+  ring.style.strokeDashoffset = 0;
+  liveTimerInterval = setInterval(() => {
+    val--;
+    if (val < 0) { clearInterval(liveTimerInterval); return; }
+    txt.textContent = val;
+    ring.style.strokeDashoffset = CIRCUMFERENCE * ((9 - val) / 9);
+  }, 1000);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function setEl(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+function fillMeter(id, val, max, isTruth) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.width = '0%';
+  requestAnimationFrame(() => {
+    el.style.width = (val / max * 100) + '%';
+  });
+}
+function fillSubBar(id, val, max) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.width = '0%';
+  requestAnimationFrame(() => {
+    el.style.width = (val / max * 100) + '%';
+  });
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+updateSlideNav();
+</script>
+</body>
+</html>
